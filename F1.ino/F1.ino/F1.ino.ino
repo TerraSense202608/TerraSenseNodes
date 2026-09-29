@@ -37,8 +37,8 @@
 #define LORA_MISO  19
 #define LORA_MOSI  23
 #define LORA_NSS   5
-#define LORA_RST   14
-#define LORA_DIO0  26
+#define LORA_RST   13
+#define LORA_DIO0  33
 
 #define LORA_FREQUENCY 433E6
 

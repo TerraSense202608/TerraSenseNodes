@@ -1,37 +1,48 @@
-#define ENABLE_USER_AUTH
-#define ENABLE_DATABASE
+// =====================================================
+// TERRASENSE GATEWAY (OFFLINE)
+// LoRa Receiver -> USB Serial -> Electron App
+// No WiFi. No Firebase. No internet required.
+// =====================================================
+//
+// This ESP32 only does two jobs:
+//   1. Receive LoRa packets from the sensor nodes
+//   2. Print them as one JSON line over USB Serial
+//
+// The Electron desktop app (main.js) reads this Serial
+// port and takes care of storing the data (SQLite) and
+// pushing it to the dashboard. There is no cloud step
+// in between anymore.
+//
+// -----------------------------------------------------
+// NODE 1 (Landslide) PACKET FORMAT EXPECTED OVER LoRa
+// (comma separated, 17 fields, sent by the sensor node):
+//
+//   nodeID,status,tiltX,tiltY,maxTilt,soilRaw,soilWet,
+//   rainRaw,rainDetected,hx711Raw,accX,accY,accZ,
+//   gyroX,gyroY,gyroZ,temperature
+//
+// -----------------------------------------------------
+// NODE 2 / FIRE01 (Forest Fire) PACKET FORMAT
+// (confirmed from the F1_ino.ino transmitter, 6 fields):
+//
+//   nodeID,status,flame,mq2Raw,temperature,pressure
+//
+// Example: FIRE01,DANGER,1,2800,52.40,1008.20
+//
+// There is only one MQ-2 gas/smoke sensor on this node
+// (no separate smoke + gas sensors, and no humidity
+// sensor - it uses a BMP280 for temperature/pressure).
+// We forward mq2Raw as both "smoke" and "gas" so the
+// existing dashboard cards for both still populate; feel
+// free to repurpose one of those cards for "pressure"
+// instead if you'd rather show that.
+// =====================================================
 
-#include <WiFi.h>
-#include <WiFiClientSecure.h>
 #include <SPI.h>
 #include <LoRa.h>
-#include <FirebaseClient.h>
 
 // =====================================================
-// WIFI
-// =====================================================
-
-#define WIFI_SSID     "vivo S2"
-#define WIFI_PASSWORD "AKASH2008"
-
-// =====================================================
-// FIREBASE
-// =====================================================
-
-#define API_KEY "AIzaSyBRf67E1Fz0sDHHNQcC2mfDB5lM1X2oYQs"
-
-#define DATABASE_URL \
-"https://terrasense-2946c-default-rtdb.asia-southeast1.firebasedatabase.app"
-
-// =====================================================
-// FIREBASE AUTH
-// =====================================================
-
-#define USER_EMAIL    "terrasense.node2@gmail.com"
-#define USER_PASSWORD "faseeha123"
-
-// =====================================================
-// LORA
+// LORA PINS (unchanged from the original wiring)
 // =====================================================
 
 #define LORA_SCK   18
@@ -43,43 +54,8 @@
 
 #define LORA_FREQUENCY 433E6
 
-// =====================================================
-// FIREBASE OBJECTS
-// =====================================================
-
-UserAuth user_auth(
-  API_KEY,
-  USER_EMAIL,
-  USER_PASSWORD
-);
-
-FirebaseApp app;
-
-// Secure connection used by FirebaseClient
-WiFiClientSecure ssl_client;
-
-// FirebaseClient 2.x API
-using AsyncClient = AsyncClientClass;
-
-AsyncClient aClient(ssl_client);
-
-RealtimeDatabase Database;
-
-// =====================================================
-// VARIABLES
-// =====================================================
-
-bool firebaseReady = false;
-
-// =====================================================
-// FUNCTION DECLARATION
-// =====================================================
-
-void sendToFirebase(
-  String data,
-  int rssi,
-  float snr
-);
+#define LANDSLIDE_FIELDS 17
+#define FIRE_FIELDS       6
 
 // =====================================================
 // SETUP
@@ -88,74 +64,13 @@ void sendToFirebase(
 void setup()
 {
   Serial.begin(115200);
-
   delay(1000);
 
   Serial.println();
   Serial.println("========================================");
-  Serial.println("       TERRASENSE NODE 2");
-  Serial.println("     LORA + FIREBASE RECEIVER");
+  Serial.println("       TERRASENSE GATEWAY (OFFLINE)");
+  Serial.println("       LORA -> USB SERIAL");
   Serial.println("========================================");
-
-  // ===================================================
-  // WIFI
-  // ===================================================
-
-  Serial.println();
-  Serial.println("Connecting to Wi-Fi...");
-
-  WiFi.begin(
-    WIFI_SSID,
-    WIFI_PASSWORD
-  );
-
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    Serial.print(".");
-    delay(500);
-  }
-
-  Serial.println();
-  Serial.println("Wi-Fi : CONNECTED");
-
-  Serial.print("IP Address : ");
-  Serial.println(WiFi.localIP());
-
-  // ===================================================
-  // FIREBASE
-  // ===================================================
-
-  Serial.println();
-  Serial.println("Connecting to Firebase...");
-
-  // Skip certificate verification for prototype
-  ssl_client.setInsecure();
-
-  // Initialize Firebase
-  initializeApp(
-    aClient,
-    app,
-    getAuth(user_auth),
-    120 * 1000,
-    NULL
-  );
-
-  app.getApp<RealtimeDatabase>(Database);
-
-  Database.url(DATABASE_URL);
-
-  // Wait for Firebase authentication
-  while (!app.ready())
-  {
-    app.loop();
-
-    Serial.println("Waiting for Firebase...");
-    delay(1000);
-  }
-
-  firebaseReady = true;
-
-  Serial.println("Firebase : CONNECTED");
 
   // ===================================================
   // LORA
@@ -164,18 +79,9 @@ void setup()
   Serial.println();
   Serial.println("Starting LoRa...");
 
-  SPI.begin(
-    LORA_SCK,
-    LORA_MISO,
-    LORA_MOSI,
-    LORA_SS
-  );
+  SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_SS);
 
-  LoRa.setPins(
-    LORA_SS,
-    LORA_RST,
-    LORA_DIO0
-  );
+  LoRa.setPins(LORA_SS, LORA_RST, LORA_DIO0);
 
   if (!LoRa.begin(LORA_FREQUENCY))
   {
@@ -192,7 +98,7 @@ void setup()
 
   Serial.println();
   Serial.println("========================================");
-  Serial.println("Waiting for Node 1...");
+  Serial.println("Waiting for sensor nodes...");
   Serial.println("========================================");
 }
 
@@ -202,13 +108,6 @@ void setup()
 
 void loop()
 {
-  // Keep Firebase authentication/tasks alive
-  app.loop();
-
-  // ===================================================
-  // CHECK LORA
-  // ===================================================
-
   int packetSize = LoRa.parsePacket();
 
   if (packetSize)
@@ -220,79 +119,24 @@ void loop()
       data += (char)LoRa.read();
     }
 
-    // LoRa signal information
     int rssi = LoRa.packetRssi();
-
     float snr = LoRa.packetSnr();
 
-    // =================================================
-    // DISPLAY RECEIVED PACKET
-    // =================================================
-
-    Serial.println();
-    Serial.println("========================================");
-    Serial.println("       PACKET RECEIVED");
-    Serial.println("========================================");
-
-    Serial.print("DATA : ");
-    Serial.println(data);
-
-    Serial.print("RSSI : ");
-    Serial.print(rssi);
-    Serial.println(" dBm");
-
-    Serial.print("SNR  : ");
-    Serial.print(snr);
-    Serial.println(" dB");
-
-    // =================================================
-    // SEND TO FIREBASE
-    // =================================================
-
-    if (firebaseReady && app.ready())
-    {
-      sendToFirebase(
-        data,
-        rssi,
-        snr
-      );
-    }
-    else
-    {
-      Serial.println("Firebase : NOT READY");
-    }
-
-    Serial.println("========================================");
+    handlePacket(data, rssi, snr);
   }
 }
 
 // =====================================================
-// SEND LORA DATA TO FIREBASE
+// SPLIT A CSV PACKET INTO UP TO maxFields STRINGS
+// Returns the number of fields actually found.
 // =====================================================
 
-void sendToFirebase(
-  String data,
-  int rssi,
-  float snr
-)
+int splitPacket(const String &data, String values[], int maxFields)
 {
-  // ---------------------------------------------------
-  // ARRAY FOR NODE 1 PACKET
-  // ---------------------------------------------------
-
-  String values[17];
-
   int index = 0;
   int start = 0;
 
-  // ---------------------------------------------------
-  // SPLIT PACKET USING COMMAS
-  // ---------------------------------------------------
-
-  while (
-    index < 17 &&
-    start < data.length()
-  )
+  while (index < maxFields && start <= (int)data.length())
   {
     int comma = data.indexOf(',', start);
 
@@ -303,307 +147,176 @@ void sendToFirebase(
       break;
     }
 
-    values[index] =
-      data.substring(
-        start,
-        comma
-      );
-
+    values[index] = data.substring(start, comma);
     index++;
-
     start = comma + 1;
   }
 
-  // ---------------------------------------------------
-  // CHECK PACKET
-  // ---------------------------------------------------
+  return index;
+}
 
-  if (index != 17)
+// =====================================================
+// HANDLE ONE RECEIVED LORA PACKET
+// =====================================================
+
+void handlePacket(const String &data, int rssi, float snr)
+{
+  Serial.println();
+  Serial.println("========================================");
+  Serial.println("       PACKET RECEIVED");
+  Serial.println("========================================");
+  Serial.print("RAW  : ");
+  Serial.println(data);
+  Serial.print("RSSI : ");
+  Serial.print(rssi);
+  Serial.println(" dBm");
+  Serial.print("SNR  : ");
+  Serial.print(snr);
+  Serial.println(" dB");
+
+  // Try the 17-field landslide format first.
+  String values[LANDSLIDE_FIELDS];
+  int fieldCount = splitPacket(data, values, LANDSLIDE_FIELDS);
+
+  if (fieldCount == LANDSLIDE_FIELDS)
   {
-    Serial.println();
-    Serial.println("Firebase : INVALID PACKET");
-    Serial.print("Fields received : ");
-    Serial.println(index);
-
+    printLandslideJson(values, rssi, snr, data);
     return;
   }
 
-  // ===================================================
-  // EXTRACT NODE 1 DATA
-  // ===================================================
+  // Otherwise try the 7-field fire format.
+  String fireValues[FIRE_FIELDS];
+  int fireFieldCount = splitPacket(data, fireValues, FIRE_FIELDS);
 
-  String nodeID = values[0];
+  if (fireFieldCount == FIRE_FIELDS)
+  {
+    printFireJson(fireValues, rssi, snr, data);
+    return;
+  }
 
-  String status = values[1];
+  Serial.print("UNRECOGNISED PACKET - fields found: ");
+  Serial.println(fieldCount);
+  Serial.println("========================================");
+}
 
-  float tiltX =
-    values[2].toFloat();
+// =====================================================
+// ESCAPE A STRING FOR SAFE JSON OUTPUT
+// =====================================================
 
-  float tiltY =
-    values[3].toFloat();
+String jsonEscape(const String &input)
+{
+  String out = "";
 
-  float maxTilt =
-    values[4].toFloat();
+  for (unsigned int i = 0; i < input.length(); i++)
+  {
+    char c = input.charAt(i);
 
-  int soilRaw =
-    values[5].toInt();
+    if (c == '"' || c == '\\')
+    {
+      out += '\\';
+      out += c;
+    }
+    else
+    {
+      out += c;
+    }
+  }
 
-  String soilWet =
-    values[6];
+  return out;
+}
 
-  int rainRaw =
-    values[7].toInt();
+// =====================================================
+// BUILD + PRINT JSON FOR A NODE 1 (LANDSLIDE) PACKET
+// =====================================================
 
-  String rainDetected =
-    values[8];
+void printLandslideJson(String values[], int rssi, float snr, const String &raw)
+{
+  String nodeID        = values[0];
+  String status         = values[1];
+  float  tiltX          = values[2].toFloat();
+  float  tiltY          = values[3].toFloat();
+  float  maxTilt        = values[4].toFloat();
+  int    soilRaw        = values[5].toInt();
+  String soilWet        = values[6];
+  int    rainRaw        = values[7].toInt();
+  String rainDetected   = values[8];
+  long   hx711Raw       = values[9].toInt();
+  float  accX           = values[10].toFloat();
+  float  accY           = values[11].toFloat();
+  float  accZ           = values[12].toFloat();
+  float  gyroX          = values[13].toFloat();
+  float  gyroY          = values[14].toFloat();
+  float  gyroZ          = values[15].toFloat();
+  float  temperature    = values[16].toFloat();
 
-  long hx711Raw =
-    values[9].toInt();
+  String json = "{";
+  json += "\"node_id\":\"" + jsonEscape(nodeID) + "\",";
+  json += "\"node_type\":\"landslide\",";
+  json += "\"status\":\"" + jsonEscape(status) + "\",";
+  json += "\"tiltX\":" + String(tiltX, 2) + ",";
+  json += "\"tiltY\":" + String(tiltY, 2) + ",";
+  json += "\"maxTilt\":" + String(maxTilt, 2) + ",";
+  json += "\"soilRaw\":" + String(soilRaw) + ",";
+  json += "\"soilWet\":\"" + jsonEscape(soilWet) + "\",";
+  json += "\"rainRaw\":" + String(rainRaw) + ",";
+  json += "\"rainDetected\":\"" + jsonEscape(rainDetected) + "\",";
+  json += "\"hx711Raw\":" + String(hx711Raw) + ",";
+  json += "\"accX\":" + String(accX, 2) + ",";
+  json += "\"accY\":" + String(accY, 2) + ",";
+  json += "\"accZ\":" + String(accZ, 2) + ",";
+  json += "\"gyroX\":" + String(gyroX, 2) + ",";
+  json += "\"gyroY\":" + String(gyroY, 2) + ",";
+  json += "\"gyroZ\":" + String(gyroZ, 2) + ",";
+  json += "\"temperature\":" + String(temperature, 2) + ",";
+  json += "\"rssi\":" + String(rssi) + ",";
+  json += "\"snr\":" + String(snr, 2) + ",";
+  json += "\"online\":true,";
+  json += "\"lastPacket\":\"" + jsonEscape(raw) + "\"";
+  json += "}";
 
-  float accX =
-    values[10].toFloat();
+  // This is the line the Electron app actually parses.
+  Serial.println(json);
+  Serial.println("========================================");
+}
 
-  float accY =
-    values[11].toFloat();
+// =====================================================
+// BUILD + PRINT JSON FOR A NODE 2 (FOREST FIRE) PACKET
+// =====================================================
 
-  float accZ =
-    values[12].toFloat();
+void printFireJson(String values[], int rssi, float snr, const String &raw)
+{
+  String nodeID      = values[0];
+  String status      = values[1];
+  String flame       = values[2];
+  int    mq2Raw      = values[3].toInt();
+  float  temperature = values[4].toFloat();
+  float  pressure    = values[5].toFloat();
 
-  float gyroX =
-    values[13].toFloat();
+  bool flameDetected =
+      flame == "1" ||
+      flame.equalsIgnoreCase("YES") ||
+      flame.equalsIgnoreCase("DETECTED") ||
+      flame.equalsIgnoreCase("true");
 
-  float gyroY =
-    values[14].toFloat();
+  String json = "{";
+  json += "\"node_id\":\"" + jsonEscape(nodeID) + "\",";
+  json += "\"node_type\":\"fire\",";
+  json += "\"status\":\"" + jsonEscape(status) + "\",";
+  json += "\"flame\":" + String(flameDetected ? "true" : "false") + ",";
+  json += "\"mq2Raw\":" + String(mq2Raw) + ",";
+  // Only one physical gas sensor (MQ-2) exists on this node - the
+  // dashboard has separate "smoke" and "gas" cards, so we feed the
+  // same raw reading into both rather than leave one blank.
+  json += "\"smoke\":" + String(mq2Raw) + ",";
+  json += "\"gas\":" + String(mq2Raw) + ",";
+  json += "\"temperature\":" + String(temperature, 2) + ",";
+  json += "\"pressure\":" + String(pressure, 2) + ",";
+  json += "\"rssi\":" + String(rssi) + ",";
+  json += "\"snr\":" + String(snr, 2) + ",";
+  json += "\"online\":true,";
+  json += "\"lastPacket\":\"" + jsonEscape(raw) + "\"";
+  json += "}";
 
-  float gyroZ =
-    values[15].toFloat();
-
-  float temperature =
-    values[16].toFloat();
-
-  // ===================================================
-  // FIREBASE PATH
-  // ===================================================
-
-  String basePath = "/TerraSense/";
-  basePath += nodeID;
-
-  // ===================================================
-  // CREATE JSON OBJECT
-  // ===================================================
-
-  object_t json;
-
-  JsonWriter writer;
-
-  object_t obj1;
-  object_t obj2;
-  object_t obj3;
-  object_t obj4;
-  object_t obj5;
-  object_t obj6;
-  object_t obj7;
-  object_t obj8;
-  object_t obj9;
-  object_t obj10;
-  object_t obj11;
-  object_t obj12;
-  object_t obj13;
-  object_t obj14;
-  object_t obj15;
-  object_t obj16;
-  object_t obj17;
-  object_t obj18;
-  object_t obj19;
-  object_t obj20;
-
-  // ===================================================
-  // CREATE FIREBASE FIELDS
-  // ===================================================
-
-  writer.create(
-    obj1,
-    "status",
-    string_t(status)
-  );
-
-  writer.create(
-    obj2,
-    "tiltX",
-    number_t(tiltX, 2)
-  );
-
-  writer.create(
-    obj3,
-    "tiltY",
-    number_t(tiltY, 2)
-  );
-
-  writer.create(
-    obj4,
-    "maxTilt",
-    number_t(maxTilt, 2)
-  );
-
-  writer.create(
-    obj5,
-    "soilRaw",
-    soilRaw
-  );
-
-  writer.create(
-    obj6,
-    "soilWet",
-    string_t(soilWet)
-  );
-
-  writer.create(
-    obj7,
-    "rainRaw",
-    rainRaw
-  );
-
-  writer.create(
-    obj8,
-    "rainDetected",
-    string_t(rainDetected)
-  );
-
-  writer.create(
-    obj9,
-    "hx711Raw",
-    hx711Raw
-  );
-
-  writer.create(
-    obj10,
-    "accX",
-    number_t(accX, 2)
-  );
-
-  writer.create(
-    obj11,
-    "accY",
-    number_t(accY, 2)
-  );
-
-  writer.create(
-    obj12,
-    "accZ",
-    number_t(accZ, 2)
-  );
-
-  writer.create(
-    obj13,
-    "gyroX",
-    number_t(gyroX, 2)
-  );
-
-  writer.create(
-    obj14,
-    "gyroY",
-    number_t(gyroY, 2)
-  );
-
-  writer.create(
-    obj15,
-    "gyroZ",
-    number_t(gyroZ, 2)
-  );
-
-  writer.create(
-    obj16,
-    "temperature",
-    number_t(temperature, 2)
-  );
-
-  writer.create(
-    obj17,
-    "rssi",
-    rssi
-  );
-
-  writer.create(
-    obj18,
-    "snr",
-    number_t(snr, 2)
-  );
-
-  writer.create(
-    obj19,
-    "online",
-    true
-  );
-
-  writer.create(
-    obj20,
-    "lastPacket",
-    string_t(data)
-  );
-
-  // ===================================================
-  // COMBINE ALL OBJECTS
-  // ===================================================
-
-  writer.join(
-    json,
-    20,
-    obj1,
-    obj2,
-    obj3,
-    obj4,
-    obj5,
-    obj6,
-    obj7,
-    obj8,
-    obj9,
-    obj10,
-    obj11,
-    obj12,
-    obj13,
-    obj14,
-    obj15,
-    obj16,
-    obj17,
-    obj18,
-    obj19,
-    obj20
-  );
-
-  // ===================================================
-  // SEND ONE JSON OBJECT TO FIREBASE
-  // ===================================================
-
-  Database.set<object_t>(
-    aClient,
-    basePath,
-    json
-  );
-
-  // ===================================================
-  // SERIAL MONITOR
-  // ===================================================
-
-  Serial.println();
-  Serial.println("[ FIREBASE ]");
-  Serial.println("  DATA SENT");
-
-  Serial.print("  PATH : ");
-  Serial.println(basePath);
-
-  Serial.println("  STATUS      : " + status);
-  Serial.println("  SOIL RAW    : " + String(soilRaw));
-  Serial.println("  RAIN RAW    : " + String(rainRaw));
-  Serial.println("  HX711 RAW   : " + String(hx711Raw));
-
-  Serial.print("  TEMPERATURE : ");
-  Serial.println(temperature);
-
-  Serial.print("  RSSI        : ");
-  Serial.println(rssi);
-
-  Serial.print("  SNR         : ");
-  Serial.println(snr);
-
+  Serial.println(json);
   Serial.println("========================================");
 }
