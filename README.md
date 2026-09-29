@@ -8,11 +8,14 @@
   A modular, offline-first platform for localized hazard detection,
   risk assessment, and early warning in remote and low-connectivity environments.
 </p>
-
-[![Platform](https://img.shields.io/badge/Platform-ESP32%20%7C%20LoRa-blue?style=for-the-badge)](#technology-stack)
-[![Gateway](https://img.shields.io/badge/Gateway-Raspberry%20Pi%204-red?style=for-the-badge)](#system-architecture)
-[![Status](https://img.shields.io/badge/Status-Validated%20Prototype-success?style=for-the-badge)](#validated-prototypes)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+<p>
+<img src="https://img.shields.io/badge/SIH-2026-blue?style=for-the-badge" alt="SIH 2026"/>
+  <img src="https://img.shields.io/badge/PS-SIH26178-orange?style=for-the-badge" alt="SIH26178"/>
+  <img src="https://img.shields.io/badge/Domain-Disaster%20Management-red?style=for-the-badge" alt="Disaster Management"/>
+  <img src="https://img.shields.io/badge/Platform-ESP32-green?style=for-the-badge&logo=espressif" alt="ESP32"/>
+  <img src="https://img.shields.io/badge/Communication-LoRa-blueviolet?style=for-the-badge" alt="LoRa"/>
+  <img src="https://img.shields.io/badge/Operation-Offline--First-0f766e?style=for-the-badge" alt="Offline First"/>
+</p>
 
 </div>
 
@@ -343,9 +346,7 @@ git push origin feature/your-feature
 
 Please include hardware details, test conditions, logs, and calibration information when submitting changes related to sensing or communication.
 
-## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## Team
 
