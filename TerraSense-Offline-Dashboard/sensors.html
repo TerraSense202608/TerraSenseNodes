@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TerraSense | Sensors</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🌱
+            </div>
+
+            <div>
+
+                <h1>TerraSense</h1>
+
+                <p>SMART LAND MONITORING</p>
+
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a href="index.html" class="nav-link">
+                ▣ Dashboard
+            </a>
+
+            <a href="sensors.html" class="nav-link active">
+                ◉ Sensors
+            </a>
+
+            <a href="energy.html" class="nav-link">
+                ☀ Solar & Battery
+            </a>
+
+            <a href="alerts.html" class="nav-link">
+                ⚠ Alerts
+            </a>
+
+            <a href="about.html" class="nav-link">
+                ⓘ About Project
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <p>NODE STATUS</p>
+
+            <div class="node-status online">
+
+                <span class="status-dot"></span>
+
+                Node 01 Online
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="small-title">
+                    SENSOR MONITORING
+                </p>
+
+                <h2>
+                    Live Sensor Data
+                </h2>
+
+            </div>
+
+
+            <button id="themeButton" class="theme-btn">
+
+                ◐ Theme
+
+            </button>
+
+        </header>
+
+
+
+        <section class="sensor-page-grid">
+
+
+            <!-- SOIL -->
+
+            <div class="sensor-detail-card">
+
+                <div class="sensor-header">
+
+                    <div class="sensor-big-icon">
+                        🌱
+                    </div>
+
+                    <div>
+
+                        <p>ANALOG SENSOR</p>
+
+                        <h2>Soil Moisture</h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="sensor-main-value" id="soilSensor">
+
+                    64%
+
+                </div>
+
+
+                <div class="sensor-info">
+
+                    <div>
+
+                        <span>GPIO</span>
+
+                        <strong>34</strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Sensor Type</span>
+
+                        <strong>Analog</strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Status</span>
+
+                        <strong>Active</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RAIN -->
+
+            <div class="sensor-detail-card">
+
+                <div class="sensor-header">
+
+                    <div class="sensor-big-icon">
+                        🌧
+                    </div>
+
+                    <div>
+
+                        <p>ANALOG SENSOR</p>
+
+                        <h2>Rain Sensor</h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="sensor-main-value" id="rainSensor">
+
+                    LOW
+
+                </div>
+
+
+                <div class="sensor-info">
+
+                    <div>
+
+                        <span>GPIO</span>
+
+                        <strong>35</strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Raw Value</span>
+
+                        <strong id="rainSensorRaw">
+                            1200
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Status</span>
+
+                        <strong>Active</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MPU -->
+
+            <div class="sensor-detail-card">
+
+                <div class="sensor-header">
+
+                    <div class="sensor-big-icon">
+                        ◈
+                    </div>
+
+                    <div>
+
+                        <p>I2C SENSOR</p>
+
+                        <h2>MPU6050</h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="tilt-grid">
+
+                    <div>
+
+                        <span>Tilt X</span>
+
+                        <strong id="tiltX">
+                            3.2°
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Tilt Y</span>
+
+                        <strong id="tiltY">
+                            -1.4°
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="sensor-info">
+
+                    <div>
+
+                        <span>SDA</span>
+
+                        <strong>GPIO 21</strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>SCL</span>
+
+                        <strong>GPIO 22</strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>Status</span>
+
+                        <strong>Connected</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <section class="panel">
+
+            <p class="card-label">
+                SENSOR ARCHITECTURE
+            </p>
+
+            <h3>
+                TerraSense Node Configuration
+            </h3>
+
+
+            <div class="architecture">
+
+                <div class="arch-item">
+
+                    <strong>
+                        Soil Sensor
+                    </strong>
+
+                    <span>
+                        GPIO 34
+                    </span>
+
+                </div>
+
+
+                <div class="arch-line">
+                    →
+                </div>
+
+
+                <div class="arch-item">
+
+                    <strong>
+                        ESP32
+                    </strong>
+
+                    <span>
+                        Main Controller
+                    </span>
+
+                </div>
+
+
+                <div class="arch-line">
+                    →
+                </div>
+
+
+                <div class="arch-item">
+
+                    <strong>
+                        Dashboard
+                    </strong>
+
+                    <span>
+                        Cloud Monitoring
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <script src="js/main.js"></script>
+
+    <script src="js/live-data.js"></script>
+
+    <script src="js/sensors.js"></script>
+
+</body>
+
+</html>

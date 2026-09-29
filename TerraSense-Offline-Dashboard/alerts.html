@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>TerraSense | Alerts</title>
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🌱
+            </div>
+
+            <div>
+
+                <h1>TerraSense</h1>
+
+                <p>SMART LAND MONITORING</p>
+
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a href="index.html"
+                class="nav-link">
+                ▣ Dashboard
+            </a>
+
+            <a href="sensors.html"
+                class="nav-link">
+                ◉ Sensors
+            </a>
+
+            <a href="energy.html"
+                class="nav-link">
+                ☀ Solar & Battery
+            </a>
+
+            <a href="alerts.html"
+                class="nav-link active">
+                ⚠ Alerts
+            </a>
+
+            <a href="about.html"
+                class="nav-link">
+                ⓘ About Project
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="small-title">
+                    MONITORING CENTER
+                </p>
+
+                <h2>
+                    Alerts & Events
+                </h2>
+
+            </div>
+
+
+            <button id="themeButton"
+                class="theme-btn">
+
+                ◐ Theme
+
+            </button>
+
+        </header>
+
+
+
+        <section class="alert-summary">
+
+
+            <div class="summary-card">
+
+                <span>
+                    NORMAL
+                </span>
+
+                <h2 id="normalAlerts">
+                    3
+                </h2>
+
+            </div>
+
+
+            <div class="summary-card warning-summary">
+
+                <span>
+                    WARNING
+                </span>
+
+                <h2 id="warningAlerts">
+                    1
+                </h2>
+
+            </div>
+
+
+            <div class="summary-card danger-summary">
+
+                <span>
+                    CRITICAL
+                </span>
+
+                <h2>
+                    0
+                </h2>
+
+            </div>
+
+
+        </section>
+
+
+
+        <section class="panel">
+
+            <p class="card-label">
+                RECENT EVENTS
+            </p>
+
+            <h3>
+                System Activity
+            </h3>
+
+
+            <div id="alertList"
+                class="alert-list">
+
+                <!-- Dynamic alerts -->
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <script src="js/main.js"></script>
+
+    <script src="js/alerts.js"></script>
+
+</body>
+
+</html>

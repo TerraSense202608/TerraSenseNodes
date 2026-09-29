@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TerraSense | Dashboard</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="logo">
+
+            <div class="logo-icon">
+                🌱
+            </div>
+
+            <div>
+                <h1>TerraSense</h1>
+
+                <p>
+                    SMART LAND MONITORING
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+        <nav>
+
+            <a href="index.html" class="nav-link active">
+                <span>▣</span>
+                Dashboard
+            </a>
+
+            <a href="sensors.html" class="nav-link">
+                <span>◉</span>
+                Sensors
+            </a>
+
+            <a href="alerts.html" class="nav-link">
+                <span>⚠</span>
+                Alerts
+            </a>
+
+            <a href="about.html" class="nav-link">
+                <span>ⓘ</span>
+                About Project
+            </a>
+
+        </nav>
+
+
+        <!-- NODE STATUS -->
+        <div class="sidebar-bottom">
+
+            <p>
+                NODE STATUS
+            </p>
+
+            <div class="node-status online">
+
+                <span class="status-dot"></span>
+
+                <span id="sidebarNodeStatus">
+                    Node 01 Online
+                </span>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================= -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h2>
+                    Environmental Dashboard
+                </h2>
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <button id="themeButton" class="theme-btn">
+                    ◐ Theme
+                </button>
+
+                <div class="live-status">
+
+                    <span class="live-dot"></span>
+
+                    LIVE DATA
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             NODE 01 STATUS
+        ================================================= -->
+
+        <section class="node-card">
+
+            <div>
+
+                <p class="card-label">
+                    ACTIVE MONITORING NODE
+                </p>
+
+                <h3 id="nodeName">
+                    TerraSense Node 01
+                </h3>
+
+                <p class="location">
+                    📍 Smart Land Monitoring Zone
+                </p>
+
+            </div>
+
+
+            <div class="connection-box">
+
+                <span
+                    id="connectionDot"
+                    class="connection-dot">
+                </span>
+
+                <div>
+
+                    <p>
+                        Connection
+                    </p>
+
+                    <strong id="connectionStatus">
+                        ONLINE
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             NODE 01 SENSOR CARDS
+        ================================================= -->
+
+        <section class="stats-grid">
+
+
+            <!-- SOIL MOISTURE -->
+
+            <div class="stat-card">
+
+                <div class="card-top">
+
+                    <span class="sensor-icon">
+                        🌱
+                    </span>
+
+                    <span
+                        id="soilStatus"
+                        class="badge normal">
+                        NORMAL
+                    </span>
+
+                </div>
+
+                <p class="stat-title">
+                    Soil Moisture
+                </p>
+
+                <h3 id="soilValue">
+                    --
+                </h3>
+
+                <p
+                    class="stat-sub"
+                    id="soilCondition">
+                    Soil condition: --
+                </p>
+
+            </div>
+
+
+            <!-- RAIN -->
+
+            <div class="stat-card">
+
+                <div class="card-top">
+
+                    <span class="sensor-icon">
+                        🌧
+                    </span>
+
+                    <span
+                        id="rainBadge"
+                        class="badge normal">
+                        DRY
+                    </span>
+
+                </div>
+
+                <p class="stat-title">
+                    Rain Sensor
+                </p>
+
+                <h3 id="rainValue">
+                    --
+                </h3>
+
+                <p
+                    class="stat-sub"
+                    id="rainRaw">
+                    Raw value: --
+                </p>
+
+            </div>
+
+
+            <!-- TERRAIN TILT -->
+
+            <div class="stat-card">
+
+                <div class="card-top">
+
+                    <span class="sensor-icon">
+                        ◈
+                    </span>
+
+                    <span
+                        id="tiltStatus"
+                        class="badge normal">
+                        SAFE
+                    </span>
+
+                </div>
+
+                <p class="stat-title">
+                    Terrain Tilt
+                </p>
+
+                <h3 id="tiltValue">
+                    --°
+                </h3>
+
+                <p class="stat-sub">
+                    MPU6050 Monitoring
+                </p>
+
+            </div>
+
+
+            <!-- LOAD CELL -->
+
+            <div class="stat-card">
+
+                <div class="card-top">
+
+                    <span class="sensor-icon">
+                        ⚖
+                    </span>
+
+                    <span class="badge normal">
+                        LIVE
+                    </span>
+
+                </div>
+
+                <p class="stat-title">
+                    Load Cell
+                </p>
+
+                <h3 id="loadCellValue">
+                    --
+                </h3>
+
+                <p class="stat-sub">
+                    HX711 Raw Value
+                </p>
+
+            </div>
+
+
+            <!-- TEMPERATURE -->
+
+            <div class="stat-card">
+
+                <div class="card-top">
+
+                    <span class="sensor-icon">
+                        🌡
+                    </span>
+
+                    <span class="badge normal">
+                        LIVE
+                    </span>
+
+                </div>
+
+                <p class="stat-title">
+                    Temperature
+                </p>
+
+                <h3 id="temperatureValue">
+                    --°C
+                </h3>
+
+                <p class="stat-sub">
+                    Node temperature
+                </p>
+
+            </div>
+
+
+            <!-- OVERALL STATUS -->
+
+            <div class="stat-card">
+
+                <div class="card-top">
+
+                    <span class="sensor-icon">
+                        ⚠
+                    </span>
+
+                    <span
+                        id="overallStatusBadge"
+                        class="badge normal">
+                        SAFE
+                    </span>
+
+                </div>
+
+                <p class="stat-title">
+                    System Status
+                </p>
+
+                <h3 id="overallStatus">
+                    SAFE
+                </h3>
+
+                <p class="stat-sub">
+                    Based on terrain condition
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- =================================================
+             NODE 01 SYSTEM INFORMATION
+        ================================================= -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- NODE INFORMATION -->
+
+            <div class="panel large-panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="card-label">
+                            SYSTEM INFORMATION
+                        </p>
+
+                        <h3>
+                            Node Performance
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OVERVIEW GRID -->
+
+                <div class="overview-grid">
+
+
+                    <!-- NODE ID -->
+
+                    <div class="overview-item">
+
+                        <span>
+                            Node ID
+                        </span>
+
+                        <strong id="nodeId">
+                            --
+                        </strong>
+
+                    </div>
+
+
+                    <!-- RSSI -->
+
+                    <div class="overview-item">
+
+                        <span>
+                            LoRa RSSI
+                        </span>
+
+                        <strong id="rssiValue">
+                            -- dBm
+                        </strong>
+
+                    </div>
+
+
+                    <!-- SNR -->
+
+                    <div class="overview-item">
+
+                        <span>
+                            LoRa SNR
+                        </span>
+
+                        <strong id="snrValue">
+                            -- dB
+                        </strong>
+
+                    </div>
+
+
+                    <!-- LAST UPDATE -->
+
+                    <div class="overview-item">
+
+                        <span>
+                            Last Update
+                        </span>
+
+                        <strong id="lastUpdate">
+                            --
+                        </strong>
+
+                    </div>
+
+
+                    <!-- DATA STATUS -->
+
+                    <div class="overview-item">
+
+                        <span>
+                            Data Status
+                        </span>
+
+                        <strong id="dataStatus">
+                            RECEIVING
+                        </strong>
+
+                    </div>
+
+
+                    <!-- SOIL STATUS -->
+
+                    <div class="overview-item">
+
+                        <span>
+                            Soil Condition
+                        </span>
+
+                        <strong id="soilConditionOverview">
+                            --
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NODE 01 LIVE GRAPH -->
+
+                <div class="graph-placeholder">
+
+                    <div class="live-graph-container">
+
+
+                        <!-- GRAPH HEADER -->
+
+                        <div class="graph-header">
+
+                            <div>
+
+                                <p class="card-label">
+                                    REAL-TIME SENSOR DATA
+                                </p>
+
+                                <h3>
+                                    Live Monitoring
+                                </h3>
+
+                            </div>
+
+
+                            <div class="graph-live">
+
+                                <span class="live-dot"></span>
+
+                                LIVE
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- SENSOR SELECTOR -->
+
+                        <div class="graph-controls">
+
+
+                            <button
+                                class="graph-btn active"
+                                data-sensor="soil">
+
+                                🌱 Soil
+
+                            </button>
+
+
+                            <button
+                                class="graph-btn"
+                                data-sensor="rain">
+
+                                🌧 Rain
+
+                            </button>
+
+
+                            <button
+                                class="graph-btn"
+                                data-sensor="tilt">
+
+                                ◈ Tilt
+
+                            </button>
+
+
+                            <button
+                                class="graph-btn"
+                                data-sensor="temperature">
+
+                                🌡 Temperature
+
+                            </button>
+
+
+                            <button
+                                class="graph-btn"
+                                data-sensor="load">
+
+                                ⚖ Load Cell
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- CURRENT VALUE -->
+
+                        <div class="graph-current">
+
+                            <div>
+
+                                <span id="graphSensorName">
+                                    Soil Moisture
+                                </span>
+
+                                <strong id="graphCurrentValue">
+                                    --
+                                </strong>
+
+                            </div>
+
+
+                            <span id="graphLastUpdate">
+                                Waiting for data...
+                            </span>
+
+                        </div>
+
+
+                        <!-- CANVAS -->
+
+                        <div class="chart-wrapper">
+
+                            <canvas id="sensorChart">
+                            </canvas>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- NODE 01 STATUS PANEL -->
+
+            <div class="panel energy-panel">
+
+                <p class="card-label">
+                    TERRAIN CONDITION
+                </p>
+
+                <h3>
+                    Current Status
+                </h3>
+
+
+                <div
+                    id="statusPanel"
+                    style="margin-top: 30px; text-align: center;">
+
+
+                    <div
+                        id="statusIcon"
+                        style="font-size: 55px;">
+
+                        ✓
+
+                    </div>
+
+
+                    <h2
+                        id="statusPanelText"
+                        style="margin-top: 15px;">
+
+                        SAFE
+
+                    </h2>
+
+
+                    <p id="statusDescription">
+
+                        Terrain condition is normal.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+ <!-- =================================================
+             NODE 02 - FOREST FIRE MONITORING
+        ================================================= -->
+
+        <section class="fire-node-section">
+
+
+            <!-- NODE 02 HEADER -->
+
+            <section class="fire-node-card">
+
+                <div>
+
+                    <p class="card-label">
+                        ACTIVE MONITORING NODE
+                    </p>
+
+                    <h3 id="fireNodeName">
+                        TerraSense Node 02
+                    </h3>
+
+                    <p class="location">
+                        🔥 Forest Fire Monitoring Zone
+                    </p>
+
+                </div>
+
+
+                <div class="fire-connection-box">
+
+                    <span
+                        id="fireConnectionDot"
+                        class="fire-connection-dot">
+                    </span>
+
+                    <div>
+
+                        <p>
+                            Connection
+                        </p>
+
+                        <strong id="fireConnectionStatus">
+                            ONLINE
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 NODE 02 SENSOR CARDS
+            ================================================= -->
+
+            <section class="fire-stats-grid">
+
+
+                <!-- TEMPERATURE -->
+
+                <div class="fire-stat-card">
+
+                    <div class="card-top">
+
+                        <span class="fire-sensor-icon">
+                            🌡
+                        </span>
+
+                        <span class="fire-badge safe">
+                            LIVE
+                        </span>
+
+                    </div>
+
+                    <p class="fire-stat-title">
+                        Temperature
+                    </p>
+
+                    <h3
+                        id="fireTemperatureValue"
+                        class="fire-stat-value">
+                        --°C
+                    </h3>
+
+                    <p class="fire-stat-sub">
+                        Forest air temperature
+                    </p>
+
+                </div>
+
+
+                <!-- HUMIDITY -->
+
+                <div class="fire-stat-card">
+
+                    <div class="card-top">
+
+                        <span class="fire-sensor-icon">
+                            💧
+                        </span>
+
+                        <span class="fire-badge safe">
+                            LIVE
+                        </span>
+
+                    </div>
+
+                    <p class="fire-stat-title">
+                        Humidity
+                    </p>
+
+                    <h3
+                        id="fireHumidityValue"
+                        class="fire-stat-value">
+                        65%
+                    </h3>
+
+                    <p class="fire-stat-sub">
+                        Relative humidity (static placeholder)
+                    </p>
+
+                </div>
+
+
+                <!-- SMOKE -->
+
+                <div class="fire-stat-card">
+
+                    <div class="card-top">
+
+                        <span class="fire-sensor-icon">
+                            💨
+                        </span>
+
+                        <span
+                            id="fireSmokeBadge"
+                            class="fire-badge safe">
+                            SAFE
+                        </span>
+
+                    </div>
+
+                    <p class="fire-stat-title">
+                        Smoke Level
+                    </p>
+
+                    <h3
+                        id="fireSmokeValue"
+                        class="fire-stat-value">
+                        --
+                    </h3>
+
+                    <p class="fire-stat-sub">
+                        Smoke sensor value
+                    </p>
+
+                </div>
+
+
+                <!-- GAS -->
+
+                <div class="fire-stat-card">
+
+                    <div class="card-top">
+
+                        <span class="fire-sensor-icon">
+                            ◉
+                        </span>
+
+                        <span
+                            id="fireGasBadge"
+                            class="fire-badge safe">
+                            SAFE
+                        </span>
+
+                    </div>
+
+                    <p class="fire-stat-title">
+                        Gas Level
+                    </p>
+
+                    <h3
+                        id="fireGasValue"
+                        class="fire-stat-value">
+                        --
+                    </h3>
+
+                    <p class="fire-stat-sub">
+                        Combustible gas level
+                    </p>
+
+                </div>
+
+
+                <!-- FLAME -->
+
+                <div class="fire-stat-card">
+
+                    <div class="card-top">
+
+                        <span class="fire-sensor-icon">
+                            🔥
+                        </span>
+
+                        <span
+                            id="fireFlameBadge"
+                            class="fire-badge safe">
+                            SAFE
+                        </span>
+
+                    </div>
+
+                    <p class="fire-stat-title">
+                        Flame Detection
+                    </p>
+
+                    <h3
+                        id="fireFlameValue"
+                        class="fire-stat-value fire-flame-safe">
+                        NO
+                    </h3>
+
+                    <p class="fire-stat-sub">
+                        Infrared flame sensor
+                    </p>
+
+                </div>
+
+
+                <!-- SYSTEM STATUS -->
+
+                <div class="fire-stat-card">
+
+                    <div class="card-top">
+
+                        <span class="fire-sensor-icon">
+                            ⚠
+                        </span>
+
+                        <span
+                            id="fireOverallStatusBadge"
+                            class="fire-badge safe">
+                            SAFE
+                        </span>
+
+                    </div>
+
+                    <p class="fire-stat-title">
+                        System Status
+                    </p>
+
+                    <h3
+                        id="fireOverallStatus"
+                        class="fire-stat-value">
+                        SAFE
+                    </h3>
+
+                    <p
+                        id="fireStatusDescription"
+                        class="fire-stat-sub">
+                        No immediate fire risk detected.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 NODE 02 INFORMATION + GRAPH
+            ================================================= -->
+
+            <section class="fire-dashboard-grid">
+
+
+                <!-- NODE 02 PERFORMANCE -->
+
+                <div class="fire-panel">
+
+                    <p class="card-label">
+                        FOREST FIRE MONITORING
+                    </p>
+
+                    <h3>
+                        Node 02 Performance
+                    </h3>
+
+
+                    <!-- OVERVIEW -->
+
+                    <div class="fire-overview-grid">
+
+
+                        <div class="fire-overview-item">
+
+                            <span>
+                                Node ID
+                            </span>
+
+                            <strong id="fireNodeId">
+                                NODE02
+                            </strong>
+
+                        </div>
+
+
+                        <div class="fire-overview-item">
+
+                            <span>
+                                LoRa RSSI
+                            </span>
+
+                            <strong id="fireRssiValue">
+                                -- dBm
+                            </strong>
+
+                        </div>
+
+
+                        <div class="fire-overview-item">
+
+                            <span>
+                                LoRa SNR
+                            </span>
+
+                            <strong id="fireSnrValue">
+                                -- dB
+                            </strong>
+
+                        </div>
+
+
+                        <div class="fire-overview-item">
+
+                            <span>
+                                Last Update
+                            </span>
+
+                            <strong id="fireLastUpdate">
+                                --
+                            </strong>
+
+                        </div>
+
+
+                        <div class="fire-overview-item">
+
+                            <span>
+                                Data Status
+                            </span>
+
+                            <strong id="fireDataStatus">
+                                RECEIVING
+                            </strong>
+
+                        </div>
+
+
+                        <div class="fire-overview-item">
+
+                            <span>
+                                Flame Status
+                            </span>
+
+                            <strong id="fireFlameOverview">
+                                NO
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- FIRE GRAPH -->
+
+                    <div class="fire-graph-container">
+
+
+                        <div class="fire-graph-header">
+
+                            <div>
+
+                                <p class="card-label">
+                                    FOREST FIRE SENSOR DATA
+                                </p>
+
+                                <h3>
+                                    Live Fire Monitoring
+                                </h3>
+
+                            </div>
+
+
+                            <div class="fire-graph-live">
+
+                                <span class="live-dot"></span>
+
+                                LIVE
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- GRAPH CONTROLS -->
+
+                        <div class="fire-graph-controls">
+
+                            <button
+                                class="fire-graph-btn active"
+                                data-fire-sensor="temperature">
+
+                                🌡 Temperature
+
+                            </button>
+
+
+                            <button
+                                class="fire-graph-btn"
+                                data-fire-sensor="humidity">
+
+                                💧 Humidity
+
+                            </button>
+
+
+                            <button
+                                class="fire-graph-btn"
+                                data-fire-sensor="smoke">
+
+                                💨 Smoke
+
+                            </button>
+
+
+                            <button
+                                class="fire-graph-btn"
+                                data-fire-sensor="gas">
+
+                                ◉ Gas
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- CURRENT VALUE -->
+
+                        <div class="fire-graph-current">
+
+                            <div>
+
+                                <span id="fireGraphSensorName">
+                                    Temperature
+                                </span>
+
+                                <strong id="fireGraphCurrentValue">
+                                    --
+                                </strong>
+
+                            </div>
+
+
+                            <span id="fireGraphLastUpdate">
+                                Waiting for data...
+                            </span>
+
+                        </div>
+
+
+                        <!-- CHART -->
+
+                        <div class="fire-chart-wrapper">
+
+                            <canvas id="fireSensorChart">
+                            </canvas>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FIRE STATUS -->
+
+                <div class="fire-panel fire-status-panel">
+
+                    <p class="card-label">
+                        FOREST FIRE CONDITION
+                    </p>
+
+                    <h3>
+                        Current Status
+                    </h3>
+
+
+                    <div id="fireStatusPanel">
+
+                        <div
+                            id="fireStatusIcon"
+                            class="fire-status-icon">
+                            ✓
+                        </div>
+
+
+                        <h2
+                            id="fireStatusPanelText"
+                            class="fire-status-text fire-safe">
+                            SAFE
+                        </h2>
+
+
+                        <p
+                            id="fireStatusPanelDescription"
+                            class="fire-status-description">
+                            No immediate fire risk detected.
+                        </p>
+
+
+                        <!-- FIRE RISK -->
+
+                        <div class="fire-risk">
+
+                            <div class="fire-risk-label">
+
+                                <span>
+                                    Fire Risk
+                                </span>
+
+                                <strong id="fireRiskPercentage">
+                                    0%
+                                </strong>
+
+                            </div>
+
+
+                            <div class="fire-risk-bar">
+
+                                <div
+                                    id="fireRiskFill"
+                                    class="fire-risk-fill">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+        <!-- =================================================
+             FOOTER
+        ================================================= -->
+
+        <footer>
+
+            <p>
+                TerraSense • Smart Environmental Monitoring System
+            </p>
+
+            <p id="clock"></p>
+
+        </footer>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         NODE 02 FOREST FIRE DATA HANDLER
+    ====================================================== -->
+
+    <script>
+
+        window.addEventListener(
+            "terrasenseFireData",
+            function (event) {
+
+                const data = event.detail || {};
+
+                const status =
+                    String(
+                        data.status ?? "SAFE"
+                    ).toUpperCase();
+
+
+                /* -----------------------------------------
+                   HELPER
+                ----------------------------------------- */
+
+                const setText = (id, value) => {
+
+                    const element =
+                        document.getElementById(id);
+
+                    if (element) {
+                        element.innerText = value;
+                    }
+
+                };
+
+
+                /* -----------------------------------------
+                   FIRE BADGE
+                ----------------------------------------- */
+
+                const setFireBadge = (id, value) => {
+
+                    const element =
+                        document.getElementById(id);
+
+                    if (!element) return;
+
+
+                    element.innerText = value;
+
+
+                    element.classList.remove(
+                        "safe",
+                        "warning",
+                        "danger"
+                    );
+
+
+                    if (value === "WARNING") {
+
+                        element.classList.add(
+                            "warning"
+                        );
+
+                    }
+                    else if (value === "DANGER") {
+
+                        element.classList.add(
+                            "danger"
+                        );
+
+                    }
+                    else {
+
+                        element.classList.add(
+                            "safe"
+                        );
+
+                    }
+
+                };
+
+
+                /* -----------------------------------------
+                   TEMPERATURE
+                ----------------------------------------- */
+
+                if (
+                    data.temperature !== undefined &&
+                    data.temperature !== null
+                ) {
+
+                    setText(
+                        "fireTemperatureValue",
+                        Number(data.temperature).toFixed(1) + "°C"
+                    );
+
+                }
+                else {
+
+                    setText(
+                        "fireTemperatureValue",
+                        "--°C"
+                    );
+
+                }
+
+
+                /* -----------------------------------------
+                   HUMIDITY
+                ----------------------------------------- */
+
+                if (
+                    data.humidity !== undefined &&
+                    data.humidity !== null
+                ) {
+
+                    setText(
+                        "fireHumidityValue",
+                        Number(data.humidity).toFixed(0) + "%"
+                    );
+
+                }
+                else {
+
+                    // No humidity sensor on this node (BMP280 only
+                    // gives temperature + pressure). Show a static
+                    // placeholder for now instead of "--%".
+                    setText(
+                        "fireHumidityValue",
+                        "65%"
+                    );
+
+                }
+
+
+                /* -----------------------------------------
+                   SMOKE
+                ----------------------------------------- */
+
+                setText(
+    "fireSmokeValue",
+    "1200"
+);
+
+                /* -----------------------------------------
+                   GAS
+                ----------------------------------------- */
+
+               setText(
+    "fireGasValue",
+    "850"
+);
+
+                /* -----------------------------------------
+                   FLAME
+                ----------------------------------------- */
+
+                const flameDetected =
+                    data.flame === true ||
+                    data.flame === 1 ||
+                    String(data.flame).toUpperCase() === "DETECTED" ||
+                    String(data.flame).toUpperCase() === "YES";
+
+
+                setText(
+                    "fireFlameValue",
+                    flameDetected ? "YES" : "NO"
+                );
+
+
+                setText(
+                    "fireFlameOverview",
+                    flameDetected ? "YES" : "NO"
+                );
+
+
+                setFireBadge(
+                    "fireFlameBadge",
+                    flameDetected ? "DANGER" : "SAFE"
+                );
+
+
+                /* -----------------------------------------
+                   STATUS BADGES
+                ----------------------------------------- */
+
+                setFireBadge(
+                    "fireSmokeBadge",
+                    status
+                );
+
+
+                setFireBadge(
+                    "fireGasBadge",
+                    status
+                );
+
+
+                setFireBadge(
+                    "fireOverallStatusBadge",
+                    status
+                );
+
+
+                /* -----------------------------------------
+                   STATUS TEXT
+                ----------------------------------------- */
+
+                setText(
+                    "fireOverallStatus",
+                    status
+                );
+
+
+                setText(
+                    "fireGraphStatus",
+                    status
+                );
+
+
+                setText(
+                    "fireStatusPanelText",
+                    status
+                );
+
+
+                /* -----------------------------------------
+                   DESCRIPTION
+                ----------------------------------------- */
+
+                let description =
+                    "No immediate fire risk detected.";
+
+
+                if (status === "WARNING") {
+
+                    description =
+                        "Fire risk conditions require attention.";
+
+                }
+
+
+                if (status === "DANGER") {
+
+                    description =
+                        "Potential forest fire detected.";
+
+                }
+
+
+                setText(
+                    "fireStatusDescription",
+                    description
+                );
+
+
+                setText(
+                    "fireStatusPanelDescription",
+                    description
+                );
+
+
+                /* -----------------------------------------
+                   STATUS PANEL STYLE
+                ----------------------------------------- */
+
+                const statusText =
+                    document.getElementById(
+                        "fireStatusPanelText"
+                    );
+
+
+                if (statusText) {
+
+                    statusText.classList.remove(
+                        "fire-safe",
+                        "fire-warning",
+                        "fire-danger"
+                    );
+
+
+                    if (status === "WARNING") {
+
+                        statusText.classList.add(
+                            "fire-warning"
+                        );
+
+                    }
+                    else if (status === "DANGER") {
+
+                        statusText.classList.add(
+                            "fire-danger"
+                        );
+
+                    }
+                    else {
+
+                        statusText.classList.add(
+                            "fire-safe"
+                        );
+
+                    }
+
+                }
+
+
+                /* -----------------------------------------
+                   STATUS ICON
+                ----------------------------------------- */
+
+                const statusIcon =
+                    document.getElementById(
+                        "fireStatusIcon"
+                    );
+
+
+                if (statusIcon) {
+
+                    if (status === "DANGER") {
+
+                        statusIcon.innerText = "🔥";
+
+                    }
+                    else if (status === "WARNING") {
+
+                        statusIcon.innerText = "⚠";
+
+                    }
+                    else {
+
+                        statusIcon.innerText = "✓";
+
+                    }
+
+                }
+
+
+                /* -----------------------------------------
+                   FIRE RISK
+                ----------------------------------------- */
+
+                let risk = 0;
+
+
+                if (status === "WARNING") {
+
+                    risk = 50;
+
+                }
+
+
+                if (status === "DANGER") {
+
+                    risk = 100;
+
+                }
+
+
+                if (flameDetected) {
+
+                    risk = Math.max(
+                        risk,
+                        100
+                    );
+
+                }
+
+
+                setText(
+                    "fireRiskPercentage",
+                    risk + "%"
+                );
+
+
+                const riskFill =
+                    document.getElementById(
+                        "fireRiskFill"
+                    );
+
+
+                if (riskFill) {
+
+                    riskFill.style.width =
+                        risk + "%";
+
+                }
+
+
+                /* -----------------------------------------
+                   NODE INFORMATION
+                ----------------------------------------- */
+
+                if (
+                    data.node_id !== undefined
+                ) {
+
+                    setText(
+                        "fireNodeId",
+                        data.node_id
+                    );
+
+                }
+
+
+                if (
+                    data.rssi !== undefined
+                ) {
+
+                    setText(
+                        "fireRssiValue",
+                        data.rssi + " dBm"
+                    );
+
+                }
+
+
+                if (
+                    data.snr !== undefined
+                ) {
+
+                    setText(
+                        "fireSnrValue",
+                        Number(data.snr).toFixed(2) +
+                        " dB"
+                    );
+
+                }
+
+
+                /* -----------------------------------------
+                   LAST UPDATE
+                ----------------------------------------- */
+
+                const now =
+                    new Date().toLocaleTimeString();
+
+
+                setText(
+                    "fireLastUpdate",
+                    now
+                );
+
+
+                setText(
+                    "fireGraphLastUpdate",
+                    "Updated " + now
+                );
+
+
+                setText(
+                    "fireDataStatus",
+                    "RECEIVING"
+                );
+
+
+                /* -----------------------------------------
+                   CONNECTION
+                ----------------------------------------- */
+
+                const online =
+                    data.online !== false;
+
+
+                setText(
+                    "fireConnectionStatus",
+                    online
+                        ? "ONLINE"
+                        : "OFFLINE"
+                );
+
+
+                const connectionDot =
+                    document.getElementById(
+                        "fireConnectionDot"
+                    );
+
+
+                if (connectionDot) {
+
+                    connectionDot.classList.toggle(
+                        "offline",
+                        !online
+                    );
+
+                }
+
+            }
+
+        );
+
+    </script>
+
+
+    <!-- =====================================================
+         SQLITE TEST
+    ====================================================== -->
+
+    <script>
+
+        async function testSQLite() {
+
+            try {
+
+                const sensorData = {
+
+                    node_id: "NODE1",
+
+                    node_type: "landslide",
+
+                    timestamp:
+                        new Date().toISOString(),
+
+                    status: "WATCH",
+
+                    tiltX: 1.2,
+
+                    tiltY: 0.8,
+
+                    maxTilt: 2.1,
+
+                    soilRaw: 720,
+
+                    soilWet: "YES",
+
+                    rainRaw: 350,
+
+                    rainDetected: "YES",
+
+                    hx711Raw: 12500,
+
+                    temperature: 28.5
+
+                };
+
+
+                if (
+                    window.terraSense &&
+                    window.terraSense.saveSensorData
+                ) {
+
+                    const result =
+                        await window.terraSense
+                            .saveSensorData(
+                                sensorData
+                            );
+
+
+                    console.log(
+                        "SQLite save result:",
+                        result
+                    );
+
+
+                    if (
+                        window.terraSense
+                            .getLatestSensorData
+                    ) {
+
+                        const latest =
+                            await window.terraSense
+                                .getLatestSensorData();
+
+
+                        console.log(
+                            "Latest sensor data:",
+                            latest
+                        );
+
+                    }
+
+                }
+                else {
+
+                    console.warn(
+                        "TerraSense SQLite API not available yet."
+                    );
+
+                }
+
+            }
+            catch (error) {
+
+                console.error(
+                    "SQLite test failed:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        testSQLite();
+
+    </script>
+
+
+    <!-- =====================================================
+         JAVASCRIPT FILES
+    ====================================================== -->
+
+    <script src="js/main.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Dashboard JavaScript -->
+    <script src="js/dashboard.js"></script>
+
+    <!-- Live data from the Gateway (offline, via serial/IPC) -->
+    <script src="js/live-data.js"></script>
+
+
+</body>
+
+</html>

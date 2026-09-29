@@ -1,0 +1,18 @@
+{
+  "name": "terrasense",
+  "version": "1.0.0",
+  "description": "TerraSense Offline Disaster Monitoring System",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "@serialport/parser-readline": "^13.0.0",
+    "better-sqlite3": "^13.0.3",
+    "serialport": "^13.0.0"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.2.0",
+    "electron": "^44.4.5"
+  }
+}

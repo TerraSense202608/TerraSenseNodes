@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>TerraSense | About</title>
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🌱
+            </div>
+
+            <div>
+
+                <h1>TerraSense</h1>
+
+                <p>SMART LAND MONITORING</p>
+
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a href="index.html"
+                class="nav-link">
+                ▣ Dashboard
+            </a>
+
+            <a href="sensors.html"
+                class="nav-link">
+                ◉ Sensors
+            </a>
+
+            <a href="energy.html"
+                class="nav-link">
+                ☀ Solar & Battery
+            </a>
+
+            <a href="alerts.html"
+                class="nav-link">
+                ⚠ Alerts
+            </a>
+
+            <a href="about.html"
+                class="nav-link active">
+                ⓘ About Project
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+            <div>
+
+                
+
+                <h2>
+                    About TerraSense
+                </h2>
+
+            </div>
+
+
+            <button id="themeButton"
+                class="theme-btn">
+
+                ◐ Theme
+
+            </button>
+
+        </header>
+
+
+
+        <section class="about-card">
+
+            <h1>
+                TerraSense
+            </h1>
+
+            <p class="about-tagline">
+
+                Intelligent Environmental Monitoring for
+                Smarter and Safer Land Management.
+
+            </p>
+
+
+            <p>
+
+                TerraSense is an IoT-based environmental monitoring
+                system designed to collect real-time data from
+                distributed sensor nodes.
+
+            </p>
+
+        </section>
+
+
+
+        <section class="feature-grid">
+
+
+            <div class="feature-card">
+
+                <h3>
+                    🌱 Soil Monitoring
+                </h3>
+
+                <p>
+                    Monitors soil moisture conditions
+                    using an analog soil moisture sensor.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <h3>
+                    🌧 Rain Detection
+                </h3>
+
+                <p>
+                    Detects rainfall conditions
+                    using a rain sensor module.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <h3>
+                    ◈ Terrain Stability
+                </h3>
+
+                <p>
+                    Uses MPU6050 accelerometer and
+                    gyroscope data to monitor tilt.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <h3>
+                    ☀ Sustainable Power
+                </h3>
+
+                <p>
+                    Future integration with solar
+                    power and battery backup.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <section class="panel">
+
+            <p class="card-label">
+                CURRENT NODE
+            </p>
+
+            <h3>
+                Hardware Configuration
+            </h3>
+
+
+            <div class="hardware-list">
+
+                <div>
+                    <strong>ESP32</strong>
+                    <span>Main Microcontroller</span>
+                </div>
+
+                <div>
+                    <strong>Soil Moisture Sensor</strong>
+                    <span>GPIO 34</span>
+                </div>
+
+                <div>
+                    <strong>Rain Sensor</strong>
+                    <span>GPIO 35</span>
+                </div>
+
+                <div>
+                    <strong>MPU6050</strong>
+                    <span>SDA 21 • SCL 22</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>

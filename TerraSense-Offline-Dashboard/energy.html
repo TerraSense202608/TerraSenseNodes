@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>TerraSense | Energy</title>
+
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-icon">
+                🌱
+            </div>
+
+            <div>
+
+                <h1>TerraSense</h1>
+
+                <p>SMART LAND MONITORING</p>
+
+            </div>
+
+        </div>
+
+
+        <nav>
+
+            <a href="index.html"
+                class="nav-link">
+                ▣ Dashboard
+            </a>
+
+            <a href="sensors.html"
+                class="nav-link">
+                ◉ Sensors
+            </a>
+
+            <a href="energy.html"
+                class="nav-link active">
+                ☀ Solar & Battery
+            </a>
+
+            <a href="alerts.html"
+                class="nav-link">
+                ⚠ Alerts
+            </a>
+
+            <a href="about.html"
+                class="nav-link">
+                ⓘ About Project
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="small-title">
+                    POWER MANAGEMENT
+                </p>
+
+                <h2>
+                    Solar & Battery System
+                </h2>
+
+            </div>
+
+
+            <button id="themeButton"
+                class="theme-btn">
+
+                ◐ Theme
+
+            </button>
+
+        </header>
+
+
+
+        <section class="energy-grid">
+
+
+            <div class="energy-card solar-card">
+
+                <div class="energy-icon">
+
+                    ☀
+
+                </div>
+
+
+                <p>
+                    SOLAR POWER GENERATION
+                </p>
+
+                <h1 id="energySolar">
+                    12.8 W
+                </h1>
+
+                <span>
+                    Current Power Output
+                </span>
+
+            </div>
+
+
+
+            <div class="energy-card battery-card">
+
+                <div class="energy-icon">
+
+                    🔋
+
+                </div>
+
+
+                <p>
+                    BACKUP BATTERY
+                </p>
+
+                <h1 id="energyBattery">
+                    86%
+                </h1>
+
+                <span>
+                    Battery Charge Level
+                </span>
+
+            </div>
+
+
+
+            <div class="energy-card">
+
+                <div class="energy-icon">
+
+                    ⚡
+
+                </div>
+
+
+                <p>
+                    SYSTEM CONSUMPTION
+                </p>
+
+                <h1 id="consumption">
+                    3.2 W
+                </h1>
+
+                <span>
+                    ESP32 + Sensors
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <section class="panel">
+
+            <p class="card-label">
+                ENERGY FLOW
+            </p>
+
+            <h3>
+                TerraSense Power Architecture
+            </h3>
+
+
+            <div class="power-flow">
+
+                <div>
+                    ☀
+                    <span>Solar Panel</span>
+                </div>
+
+                <strong>→</strong>
+
+                <div>
+                    ⚡
+                    <span>Charge Controller</span>
+                </div>
+
+                <strong>→</strong>
+
+                <div>
+                    🔋
+                    <span>Battery</span>
+                </div>
+
+                <strong>→</strong>
+
+                <div>
+                    ◉
+                    <span>ESP32 Node</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section class="panel">
+
+            <p class="card-label">
+                FUTURE VISUALIZATION
+            </p>
+
+            <h3>
+                Energy History Graph
+            </h3>
+
+            <div class="graph-placeholder">
+
+                <div>
+
+                    <span class="graph-icon">
+                        📊
+                    </span>
+
+                    <p>
+                        Solar power and battery history graph will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <script src="js/main.js"></script>
+
+    <script src="js/energy.js"></script>
+
+</body>
+
+</html>

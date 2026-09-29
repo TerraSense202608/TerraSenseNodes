@@ -1,0 +1,2168 @@
+:root {
+
+    --ivory: #EDEBDC;
+
+    --umber: #8A4B2A;
+
+    --chestnut: #8B2C1F;
+
+    --moss: #3B3F2F;
+
+    --brown: #4B3B2A;
+
+    --slate: #2C2E30;
+
+    --maroon: #6B2E2F;
+
+    --olive: #5E614B;
+
+    --gold: #BFA76F;
+
+    --taupe: #D8B7A1;
+
+    --background: #F3EFE6;
+
+    --card: #FFFFFF;
+
+    --text: #2C2E30;
+
+    --muted: #777;
+
+}
+
+
+/* DARK THEME */
+
+body.dark {
+
+    --background: #1E1E1C;
+
+    --card: #2C2E30;
+
+    --text: #EDEBDC;
+
+    --muted: #B5B0A7;
+
+}
+
+
+/* RESET */
+
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+body {
+
+    font-family: "DM Sans", sans-serif;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--background),
+            #DED5C5
+        );
+
+    color: var(--text);
+
+    display: flex;
+
+    min-height: 100vh;
+
+}
+
+
+/* SIDEBAR */
+
+.sidebar {
+
+    width: 270px;
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--slate),
+            var(--brown)
+        );
+
+    color: var(--ivory);
+
+    padding: 30px 20px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    position: fixed;
+
+    height: 100vh;
+
+}
+
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 50px;
+
+}
+
+
+.logo-icon {
+
+    width: 50px;
+
+    height: 50px;
+
+    background: var(--gold);
+
+    border-radius: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 24px;
+
+}
+
+
+.logo h1 {
+
+    font-family: "Cinzel";
+
+    font-size: 22px;
+
+}
+
+
+.logo p {
+
+    font-size: 9px;
+
+    letter-spacing: 1.5px;
+
+    color: var(--taupe);
+
+}
+
+
+nav {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+
+.nav-link {
+
+    color: #D8D2C8;
+
+    text-decoration: none;
+
+    padding: 14px;
+
+    border-radius: 10px;
+
+    transition: 0.3s;
+
+}
+
+
+.nav-link:hover {
+
+    background: rgba(255,255,255,0.08);
+
+}
+
+
+.nav-link.active {
+
+    background: var(--gold);
+
+    color: var(--slate);
+
+    font-weight: 600;
+
+}
+
+
+.sidebar-bottom {
+
+    margin-top: auto;
+
+}
+
+
+.sidebar-bottom p {
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+    color: var(--taupe);
+
+}
+
+
+.node-status {
+
+    margin-top: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+
+.status-dot {
+
+    width: 10px;
+
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #65C466;
+
+}
+
+
+/* MAIN */
+
+.main-content {
+
+    margin-left: 270px;
+
+    width: calc(100% - 270px);
+
+    padding: 35px 50px;
+
+}
+
+
+/* TOPBAR */
+
+.topbar {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 35px;
+
+}
+
+
+.small-title {
+
+    color: var(--umber);
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    font-weight: bold;
+
+}
+
+
+.topbar h2 {
+
+    font-family: "Cinzel";
+
+    font-size: 30px;
+
+    margin-top: 5px;
+
+}
+
+
+.top-actions {
+
+    display: flex;
+
+    gap: 15px;
+
+    align-items: center;
+
+}
+
+
+.theme-btn {
+
+    border: none;
+
+    padding: 10px 18px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    background: var(--brown);
+
+    color: var(--ivory);
+
+}
+
+
+.live-status {
+
+    background: var(--card);
+
+    padding: 10px 16px;
+
+    border-radius: 30px;
+
+    font-size: 12px;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+
+}
+
+
+.live-dot {
+
+    width: 8px;
+
+    height: 8px;
+
+    background: #4CAF50;
+
+    display: inline-block;
+
+    border-radius: 50%;
+
+    margin-right: 5px;
+
+}
+
+
+/* NODE CARD */
+
+.node-card {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--brown),
+            var(--umber)
+        );
+
+    color: var(--ivory);
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+
+}
+
+
+.card-label {
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    color: var(--gold);
+
+}
+
+
+.node-card h3 {
+
+    font-family: "Cinzel";
+
+    font-size: 24px;
+
+    margin: 8px 0;
+
+}
+
+
+.location {
+
+    color: var(--taupe);
+
+}
+
+
+.connection-box {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.connection-dot {
+
+    width: 12px;
+
+    height: 12px;
+
+    background: #5FD068;
+
+    border-radius: 50%;
+
+}
+
+
+/* STATS */
+
+.stats-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(200px, 1fr));
+
+    gap: 20px;
+
+}
+
+
+.stat-card {
+
+    background: var(--card);
+
+    padding: 22px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.06);
+
+    transition: 0.3s;
+
+}
+
+
+.stat-card:hover {
+
+    transform: translateY(-5px);
+
+}
+
+
+.card-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+}
+
+
+.sensor-icon {
+
+    font-size: 25px;
+
+}
+
+
+.badge {
+
+    font-size: 9px;
+
+    padding: 6px 9px;
+
+    border-radius: 20px;
+
+}
+
+
+.badge.normal {
+
+    background: #DCE8D6;
+
+    color: var(--moss);
+
+}
+
+
+.badge.warning {
+
+    background: #F4E0C8;
+
+    color: var(--umber);
+
+}
+
+
+.stat-title {
+
+    margin-top: 25px;
+
+    color: var(--muted);
+
+}
+
+
+.stat-card h3 {
+
+    font-size: 30px;
+
+    margin-top: 5px;
+
+    font-family: "Cinzel";
+
+}
+
+
+.stat-sub {
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin-top: 5px;
+
+}
+
+
+/* DASHBOARD GRID */
+
+.dashboard-grid {
+
+    display: grid;
+
+    grid-template-columns: 2fr 1fr;
+
+    gap: 20px;
+
+    margin-top: 25px;
+
+}
+
+
+.panel {
+
+    background: var(--card);
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    margin-top: 25px;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.05);
+
+}
+
+
+.large-panel {
+
+    margin-top: 0;
+
+}
+
+
+.panel h3 {
+
+    font-family: "Cinzel";
+
+    margin-top: 7px;
+
+}
+
+
+.overview-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 15px;
+
+    margin-top: 25px;
+
+}
+
+
+.overview-item {
+
+    padding: 15px;
+
+    background: rgba(191,167,111,0.08);
+
+    border-radius: 10px;
+
+}
+
+
+.overview-item span {
+
+    font-size: 11px;
+
+    color: var(--muted);
+
+}
+
+
+.overview-item strong {
+
+    display: block;
+
+    margin-top: 6px;
+
+}
+
+
+.graph-placeholder {
+
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    margin-top: 25px;
+    border: 0;
+    border-radius: 15px;
+    display: block;
+    overflow: hidden;
+
+}
+
+
+.graph-icon {
+
+    font-size: 35px;
+
+}
+
+
+.energy-panel {
+
+    margin-top: 0;
+
+}
+
+
+.solar-visual {
+
+    margin: 30px 0;
+
+    display: flex;
+
+    gap: 15px;
+
+    align-items: center;
+
+}
+
+
+.solar-icon {
+
+    font-size: 40px;
+
+}
+
+
+.progress-label {
+
+    display: flex;
+
+    justify-content: space-between;
+
+}
+
+
+.progress-bar {
+
+    height: 10px;
+
+    background: #DDD6CB;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    margin-top: 10px;
+
+}
+
+
+.progress-fill {
+
+    height: 100%;
+
+    background: var(--gold);
+
+    border-radius: 20px;
+
+    transition: 1s;
+
+}
+
+
+.panel-link {
+
+    display: block;
+
+    margin-top: 25px;
+
+    color: var(--umber);
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+}
+
+
+/* SENSOR PAGE */
+
+.sensor-page-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(300px, 1fr));
+
+    gap: 20px;
+
+}
+
+
+.sensor-detail-card {
+
+    background: var(--card);
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.06);
+
+}
+
+
+.sensor-header {
+
+    display: flex;
+
+    gap: 15px;
+
+    align-items: center;
+
+}
+
+
+.sensor-big-icon {
+
+    font-size: 35px;
+
+}
+
+
+.sensor-header p {
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+    color: var(--umber);
+
+}
+
+
+.sensor-main-value {
+
+    font-family: "Cinzel";
+
+    font-size: 50px;
+
+    margin: 35px 0;
+
+}
+
+
+.sensor-info {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 10px;
+
+}
+
+
+.sensor-info div {
+
+    background: rgba(191,167,111,0.1);
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+}
+
+
+.sensor-info span {
+
+    font-size: 10px;
+
+    color: var(--muted);
+
+}
+
+
+.sensor-info strong {
+
+    display: block;
+
+    margin-top: 5px;
+
+    font-size: 12px;
+
+}
+
+
+.tilt-grid {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 15px;
+
+    margin: 30px 0;
+
+}
+
+
+.tilt-grid div {
+
+    padding: 20px;
+
+    background: rgba(191,167,111,0.1);
+
+    border-radius: 12px;
+
+}
+
+
+.tilt-grid strong {
+
+    display: block;
+
+    font-size: 25px;
+
+    margin-top: 5px;
+
+}
+
+
+.architecture {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-around;
+
+    margin-top: 30px;
+
+}
+
+
+.arch-item {
+
+    text-align: center;
+
+    padding: 20px;
+
+    background: rgba(191,167,111,0.1);
+
+    border-radius: 12px;
+
+}
+
+
+.arch-item span {
+
+    display: block;
+
+    font-size: 12px;
+
+    margin-top: 5px;
+
+}
+
+
+/* ENERGY */
+
+.energy-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(250px, 1fr));
+
+    gap: 20px;
+
+}
+
+
+.energy-card {
+
+    background: var(--card);
+
+    padding: 30px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.05);
+
+}
+
+
+.energy-icon {
+
+    font-size: 40px;
+
+}
+
+
+.energy-card p {
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+
+    color: var(--muted);
+
+    margin-top: 20px;
+
+}
+
+
+.energy-card h1 {
+
+    font-family: "Cinzel";
+
+    font-size: 38px;
+
+    margin: 10px 0;
+
+}
+
+
+.power-flow {
+
+    display: flex;
+
+    justify-content: space-around;
+
+    align-items: center;
+
+    margin-top: 30px;
+
+    flex-wrap: wrap;
+
+    gap: 20px;
+
+}
+
+
+.power-flow div {
+
+    text-align: center;
+
+    font-size: 30px;
+
+}
+
+
+.power-flow span {
+
+    display: block;
+
+    font-size: 12px;
+
+}
+
+
+/* ALERTS */
+
+.alert-summary {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 20px;
+
+}
+
+
+.summary-card {
+
+    background: var(--card);
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+}
+
+
+.summary-card span {
+
+    font-size: 11px;
+
+    color: var(--muted);
+
+}
+
+
+.summary-card h2 {
+
+    font-family: "Cinzel";
+
+    font-size: 35px;
+
+    margin-top: 10px;
+
+}
+
+
+.alert-list {
+
+    margin-top: 25px;
+
+}
+
+
+.alert-item {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 18px;
+
+    border-bottom: 1px solid #DDD;
+
+}
+
+
+.alert-item strong {
+
+    display: block;
+
+}
+
+
+.alert-time {
+
+    color: var(--muted);
+
+    font-size: 12px;
+
+}
+
+
+/* ABOUT */
+
+.about-card {
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--brown),
+            var(--umber)
+        );
+
+    color: var(--ivory);
+
+    padding: 45px;
+
+    border-radius: 20px;
+
+}
+
+
+.about-card h1 {
+
+    font-family: "Cinzel";
+
+    font-size: 45px;
+
+}
+
+
+.about-tagline {
+
+    color: var(--gold);
+
+    font-size: 20px;
+
+    margin: 15px 0;
+
+}
+
+
+.feature-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 20px;
+
+    margin-top: 25px;
+
+}
+
+
+.feature-card {
+
+    background: var(--card);
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+}
+
+
+.feature-card h3 {
+
+    font-family: "Cinzel";
+
+}
+
+
+.feature-card p {
+
+    margin-top: 10px;
+
+    color: var(--muted);
+
+}
+
+
+.hardware-list {
+
+    margin-top: 25px;
+
+}
+
+
+.hardware-list div {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    padding: 18px;
+
+    border-bottom: 1px solid #DDD;
+
+}
+
+
+.hardware-list span {
+
+    color: var(--muted);
+
+}
+
+
+/* FOOTER */
+
+footer {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 35px;
+
+    font-size: 11px;
+
+    color: var(--muted);
+
+}
+
+
+/* MOBILE */
+
+@media(max-width: 900px) {
+
+    .sidebar {
+
+        width: 75px;
+
+        padding: 20px 10px;
+
+    }
+
+    .logo h1,
+    .logo p,
+    .nav-link {
+        font-size: 0;
+    }
+
+    .nav-link span {
+        font-size: 20px;
+    }
+
+    .main-content {
+
+        margin-left: 75px;
+
+        width: calc(100% - 75px);
+
+        padding: 25px;
+
+    }
+
+    .dashboard-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}
+
+
+@media(max-width: 600px) {
+
+    .sidebar {
+
+        display: none;
+
+    }
+
+    .main-content {
+
+        margin-left: 0;
+
+        width: 100%;
+
+        padding: 20px;
+
+    }
+
+    .topbar {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+    }
+
+    .node-card {
+
+        flex-direction: column;
+
+        gap: 20px;
+
+    }
+
+}
+/* =====================================================
+   TERRASENSE LIVE GRAPH
+===================================================== */
+
+.live-graph-container {
+
+    width: 100%;
+
+    margin-top: 30px;
+
+    padding: 28px;
+
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.04);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+}
+
+
+.graph-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+
+}
+
+
+.graph-header h3 {
+
+    margin-top: 5px;
+
+}
+
+
+.graph-live {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+}
+
+
+.graph-live .live-dot {
+
+    width: 9px;
+
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #55b96b;
+
+    box-shadow: 0 0 10px rgba(85, 185, 107, 0.7);
+
+}
+
+
+.graph-controls {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.graph-btn {
+
+    border: none;
+
+    padding: 9px 15px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: inherit;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    transition: 0.25s ease;
+
+}
+
+
+.graph-btn:hover {
+
+    transform: translateY(-1px);
+
+}
+
+
+.graph-btn.active {
+
+    background: #c7aa70;
+
+    color: #201b16;
+
+    font-weight: 600;
+
+}
+
+
+.graph-current {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-end;
+
+    margin-bottom: 15px;
+
+}
+
+
+.graph-current div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+
+#graphSensorName {
+
+    font-size: 13px;
+
+    opacity: 0.65;
+
+}
+
+
+#graphCurrentValue {
+
+    font-family: "Cinzel", serif;
+
+    font-size: 28px;
+
+}
+
+
+#graphLastUpdate {
+
+    font-size: 12px;
+
+    opacity: 0.55;
+
+}
+
+
+.chart-wrapper {
+
+    position: relative;
+    width: 100%;
+    height: 240px;
+    max-height: 240px;
+    overflow: hidden;
+
+}
+
+
+.chart-wrapper canvas {
+
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100%;
+
+}
+
+/* LIVE GRAPH LAYOUT FIX */
+.large-panel,
+.live-graph-container {
+    min-width: 0;
+}
+
+.live-graph-container {
+    overflow: hidden;
+}
+
+.graph-controls {
+    max-width: 100%;
+}
+/* =====================================================
+   NODE 02 - FOREST FIRE DASHBOARD
+===================================================== */
+
+.fire-node-section {
+    margin-top: 35px;
+}
+
+
+/* FOREST FIRE NODE HEADER */
+
+.fire-node-card {
+    background:
+        linear-gradient(
+            135deg,
+            var(--maroon),
+            var(--chestnut)
+        );
+
+    color: var(--ivory);
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 8px 30px rgba(107, 46, 47, 0.18);
+}
+
+
+.fire-node-card .card-label {
+    color: var(--gold);
+}
+
+
+.fire-node-card h3 {
+    font-family: "Cinzel", serif;
+
+    font-size: 24px;
+
+    margin: 8px 0;
+}
+
+
+.fire-node-card .location {
+    color: var(--taupe);
+}
+
+
+/* FIRE NODE CONNECTION */
+
+.fire-connection-box {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.fire-connection-dot {
+    width: 12px;
+
+    height: 12px;
+
+    border-radius: 50%;
+
+    background: #5FD068;
+
+    box-shadow:
+        0 0 10px rgba(95, 208, 104, 0.5);
+}
+
+
+.fire-connection-dot.offline {
+    background: #C94C4C;
+
+    box-shadow:
+        0 0 10px rgba(201, 76, 76, 0.5);
+}
+
+
+/* FIRE SENSOR GRID */
+
+.fire-stats-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(200px, 1fr));
+
+    gap: 20px;
+}
+
+
+/* FIRE SENSOR CARD */
+
+.fire-stat-card {
+    background: var(--card);
+
+    padding: 22px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.06);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+.fire-stat-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.09);
+}
+
+
+.fire-stat-card .card-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.fire-sensor-icon {
+    font-size: 25px;
+}
+
+
+.fire-stat-title {
+    margin-top: 25px;
+
+    color: var(--muted);
+
+    font-size: 15px;
+}
+
+
+.fire-stat-value {
+    font-family: "Cinzel", serif;
+
+    font-size: 30px;
+
+    margin-top: 5px;
+
+    color: var(--text);
+}
+
+
+.fire-stat-sub {
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin-top: 5px;
+}
+
+
+/* FIRE BADGES */
+
+.fire-badge {
+    font-size: 9px;
+
+    padding: 6px 9px;
+
+    border-radius: 20px;
+
+    text-transform: uppercase;
+
+    font-weight: 600;
+}
+
+
+.fire-badge.safe {
+    background: #DCE8D6;
+
+    color: var(--moss);
+}
+
+
+.fire-badge.warning {
+    background: #F4E0C8;
+
+    color: var(--umber);
+}
+
+
+.fire-badge.danger {
+    background: #F2D1CC;
+
+    color: var(--chestnut);
+}
+
+
+/* FLAME DETECTION */
+
+.fire-flame-detected {
+    color: var(--chestnut) !important;
+
+    font-weight: 700;
+
+    animation: firePulse 1.5s infinite;
+}
+
+
+.fire-flame-safe {
+    color: var(--moss) !important;
+}
+
+
+@keyframes firePulse {
+
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.55;
+    }
+
+    100% {
+        opacity: 1;
+    }
+
+}
+
+
+/* FIRE DASHBOARD INFORMATION */
+
+.fire-dashboard-grid {
+    display: grid;
+
+    grid-template-columns: 2fr 1fr;
+
+    gap: 20px;
+
+    margin-top: 25px;
+}
+
+
+.fire-panel {
+    background: var(--card);
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+
+.fire-panel h3 {
+    font-family: "Cinzel", serif;
+
+    margin-top: 7px;
+}
+
+
+/* FIRE NODE INFORMATION */
+
+.fire-overview-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+
+    margin-top: 25px;
+}
+
+
+.fire-overview-item {
+    padding: 15px;
+
+    background:
+        rgba(191, 167, 111, 0.08);
+
+    border-radius: 10px;
+}
+
+
+.fire-overview-item span {
+    font-size: 11px;
+
+    color: var(--muted);
+}
+
+
+.fire-overview-item strong {
+    display: block;
+
+    margin-top: 6px;
+}
+
+
+/* FIRE GRAPH */
+
+.fire-graph-container {
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 28px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(191, 167, 111, 0.05);
+
+    border: 1px solid
+        rgba(191, 167, 111, 0.15);
+
+    overflow: hidden;
+}
+
+
+.fire-graph-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+
+.fire-graph-header h3 {
+    margin-top: 5px;
+}
+
+
+.fire-graph-live {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+.fire-graph-live .live-dot {
+    width: 9px;
+
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #55B96B;
+
+    box-shadow:
+        0 0 10px rgba(85, 185, 107, 0.7);
+}
+
+
+/* FIRE GRAPH BUTTONS */
+
+.fire-graph-controls {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-bottom: 20px;
+}
+
+
+.fire-graph-btn {
+    border: none;
+
+    padding: 9px 15px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    background:
+        rgba(191, 167, 111, 0.10);
+
+    color: inherit;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    transition: 0.25s ease;
+}
+
+
+.fire-graph-btn:hover {
+    transform: translateY(-1px);
+}
+
+
+.fire-graph-btn.active {
+    background: var(--gold);
+
+    color: #201B16;
+
+    font-weight: 600;
+}
+
+
+/* FIRE GRAPH CURRENT VALUE */
+
+.fire-graph-current {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-end;
+
+    margin-bottom: 15px;
+}
+
+
+.fire-graph-current div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+#fireGraphSensorName {
+    font-size: 13px;
+
+    opacity: 0.65;
+}
+
+
+#fireGraphCurrentValue {
+    font-family: "Cinzel", serif;
+
+    font-size: 28px;
+}
+
+
+#fireGraphLastUpdate {
+    font-size: 12px;
+
+    opacity: 0.55;
+}
+
+
+.fire-chart-wrapper {
+    position: relative;
+
+    width: 100%;
+
+    height: 240px;
+
+    max-height: 240px;
+
+    overflow: hidden;
+}
+
+
+.fire-chart-wrapper canvas {
+    display: block;
+
+    width: 100% !important;
+
+    height: 100% !important;
+
+    max-width: 100%;
+}
+
+
+/* FIRE STATUS PANEL */
+
+.fire-status-panel {
+    text-align: center;
+
+    min-height: 250px;
+}
+
+
+.fire-status-icon {
+    font-size: 55px;
+
+    margin-top: 30px;
+}
+
+
+.fire-status-text {
+    font-family: "Cinzel", serif;
+
+    font-size: 28px;
+
+    margin-top: 15px;
+}
+
+
+.fire-status-description {
+    color: var(--muted);
+
+    margin-top: 10px;
+
+    line-height: 1.5;
+}
+
+
+/* FIRE STATUS COLORS */
+
+.fire-safe {
+    color: var(--moss);
+}
+
+
+.fire-warning {
+    color: var(--umber);
+}
+
+
+.fire-danger {
+    color: var(--chestnut);
+}
+
+
+/* FIRE RISK BAR */
+
+.fire-risk {
+    margin-top: 30px;
+
+    text-align: left;
+}
+
+
+.fire-risk-label {
+    display: flex;
+
+    justify-content: space-between;
+
+    font-size: 12px;
+
+    color: var(--muted);
+}
+
+
+.fire-risk-bar {
+    height: 10px;
+
+    background: #DDD6CB;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+
+    margin-top: 10px;
+}
+
+
+.fire-risk-fill {
+    height: 100%;
+
+    width: 0%;
+
+    background: var(--gold);
+
+    border-radius: 20px;
+
+    transition: width 0.8s ease;
+}
+
+
+/* FIRE ALERT */
+
+.fire-alert-box {
+    margin-top: 20px;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    background:
+        rgba(139, 44, 31, 0.06);
+
+    border-left:
+        4px solid var(--chestnut);
+}
+
+
+.fire-alert-box strong {
+    display: block;
+
+    margin-bottom: 5px;
+}
+
+
+.fire-alert-box p {
+    color: var(--muted);
+
+    font-size: 12px;
+}
+
+
+/* FIRE NODE RESPONSIVE */
+
+@media(max-width: 900px) {
+
+    .fire-dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media(max-width: 600px) {
+
+    .fire-node-card {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+    }
+
+    .fire-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fire-overview-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fire-graph-current {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+
+}
