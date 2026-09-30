@@ -358,6 +358,72 @@ git push origin feature/your-feature
 
 For hardware or sensing changes, include test conditions, sensor details, logs, and calibration information.
 
+
+
+# Related Work and Prior Art
+
+This page compares TerraSense with existing systems, based on publicly available information (accessed 30 September 2026). TerraSense is a prototype-stage project. Differences are listed only where we can demonstrate them, and each is marked Working, In development or Planned.
+
+## 1. Regional and national systems (complementary)
+
+| System | What it provides | Scale |
+|---|---|---|
+| ISRO/NRSC Landslide Atlas of India | Satellite-derived landslide inventory (~80,000 landslides, 17 states and 2 UTs, 1998-2022) and susceptibility and risk-exposure mapping | Regional |
+| IMD MHEW-DSS | Multi-hazard weather forecasting and decision support | Regional |
+| Forest Survey of India near-real-time fire monitoring | Satellite fire alerts (VIIRS, 375 m resolution) | Regional |
+| CWC flood forecasting | River-level and dam/barrage inflow forecasts at forecasting stations | River basin |
+| NDMA / SACHET | Multi-hazard alert dissemination | National |
+
+TerraSense does not replace these systems. It is intended as a site-level ground-sensing layer that can add local measurements to regional information.
+
+## 2. Ground-sensor systems (closest prior art)
+
+| System | Summary |
+|---|---|
+| Amrita Landslide Early Warning System (Munnar, Kerala; Sikkim) | Wireless sensor network for rainfall-induced landslide warning. Uses sensors such as rain gauges, soil moisture, pore-pressure and tilt/vibration, and has issued warnings in Munnar since 2009. Much richer sensor suite than TerraSense. |
+| Dryad Silvanet | Commercial solar-powered LoRaWAN mesh with gas sensors (hydrogen, carbon monoxide) and embedded AI for early wildfire detection, deployed at scale. |
+| Ragnoli et al. (2020) | Low-power LoRa-based flood-monitoring system (flood only). |
+
+## 3. How TerraSense differs
+
+| Aspect | TerraSense | Status |
+|---|---|---|
+| Local risk assessment without internet | Gateway computes risk state and stores data locally (Raspberry Pi, SQLite, local dashboard) | Working prototype <!-- CHECK: demo with internet disconnected --> |
+| Shared node/gateway design across hazards | Same ESP32 + LoRa architecture used for landslide and fire nodes | Working prototype (2 hazards) |
+| Fault state | Nodes report a FAULT state distinct from SAFE/WATCH/WARNING/DANGER | In development <!-- CHECK: show a fault-injection demo or change to Planned --> |
+| Solar power | Solar panel, charge controller and battery | In development |
+| Self-healing LoRa mesh | Multi-hop relaying between nodes | Planned |
+| ML-based risk classification and anomaly detection | To be developed after verified field data is collected | Planned |
+| Flood and pollution nodes | Additional hazard modules on the same architecture | Planned |
+
+Current risk states use rule-based multi-sensor logic. We make no claim of superior accuracy, range or cost until we have measured results.
+
+## 4. Lessons we take from this work
+
+- Established landslide warning systems rely on rainfall data as a primary trigger, so we plan to add a rain gauge that measures intensity rather than only wet/dry.
+- Soil moisture at a single point is a limited indicator of slope stability, so our thresholds will be site-specific and calibrated against a baseline.
+- Field deployments can be damaged or stolen, so we plan tamper detection and robust mounting.
+- Commercial wildfire systems use gas sensing with on-device logic to reduce false alarms, so we plan persistence and multi-sensor confirmation before raising a high-level alert.
+- Regional systems already cover forecasts and alert dissemination, so we plan to keep our alerts local first and later explore a standards-based link (for example CAP) into existing channels.
+
+## 5. Regulatory note
+
+India delicensed 865-867 MHz for short-range devices, and this is our target band for a deployable version. Our current prototype uses 433 MHz modules. A 2015 regulatory summary lists 433-434.79 MHz at 10 mW ERP with a 10 kHz channel bandwidth and a 10% duty-cycle limit, so we will verify current DoT rules before any deployment outside a lab.
+
+## Sources
+
+- ISRO/NRSC, Landslide Atlas of India: https://www.isro.gov.in/ISRO_EN/Landslide_Atlas_India.html
+- IMD MHEW-DSS report: https://imdgeospatial.imd.gov.in/Resources/Multi%20Hazard%20Early%20warning%20DSS_Report_Jan2026.pdf
+- Forest Survey of India, near-real-time fire monitoring: https://fsiforestfire.gov.in/Home/NRTDetails
+- CWC, Flood Management in India, Statistical Report 2023: https://cwc.gov.in/sites/default/files/flood-management-india-statistical-report-2023.pdf
+- Amrita Landslide Early Warning System: https://amrita.edu/project/landslide-early-warning-system
+- Amrita, early warnings in Munnar (2020): https://www.amrita.edu/?p=105708
+- Dryad Silvanet: https://dryad.net/silvanet
+- ITU, Silvanet entry: https://www.itu.int/ew4all/solution/silvanet/
+- Ragnoli et al. (2020), LoRa flood monitoring: https://doi.org/10.3390/jlpea10020015
+- Rokhideh, Fearnley and Budimir (2025), multi-hazard early warning systems: https://doi.org/10.1007/s13753-025-00622-9
+- DoT, delicensing notifications: https://dot.gov.in/sites/default/files/Regulation.pdf
+
 ## Team
 
 **TerraSense Team**
