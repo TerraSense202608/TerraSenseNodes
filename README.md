@@ -431,6 +431,7 @@ India delicensed 865-867 MHz for short-range devices, and this is our target ban
 For collaboration, deployment, or technical questions, open an issue in this repository or contact the project maintainers.
 
 ---
+Our Email : terrasense2026@gmail.com
 
 <div align="center">
 
