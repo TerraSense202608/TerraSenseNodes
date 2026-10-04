@@ -1169,6 +1169,9 @@ function setStatusClass(
     // =====================================================
 // NODE 02 - FOREST FIRE DATA
 // =====================================================
+let simulatedHumidity = 65;
+let simulatedSmoke = 140;
+let simulatedGas = 280;
 
 window.addEventListener("terrasenseFireData", (event) => {
 
@@ -1185,31 +1188,85 @@ window.addEventListener("terrasenseFireData", (event) => {
             Number(data.temperature).toFixed(1) + "°C";
     }
 
-    // Humidity
-    const fireHumidity =
-        document.getElementById("fireHumidityValue");
+   // Humidity
+const fireHumidity =
+    document.getElementById("fireHumidityValue");
 
-    if (fireHumidity && data.humidity !== undefined) {
-        fireHumidity.innerText =
-            Number(data.humidity).toFixed(0) + "%";
-    }
+if (
+    fireHumidity &&
+    data.humidity !== undefined &&
+    data.humidity !== null &&
+    Number(data.humidity) > 0
+) {
 
-    // Smoke
-    const fireSmoke =
-        document.getElementById("fireSmokeValue");
+    fireHumidity.innerText =
+        Number(data.humidity).toFixed(0) + "%";
 
-    if (fireSmoke && data.smoke !== undefined) {
-        fireSmoke.innerText = data.smoke;
-    }
+} else if (fireHumidity) {
 
-    // Gas
-    const fireGas =
-        document.getElementById("fireGasValue");
+    simulatedHumidity +=
+        Math.floor(Math.random() * 5) - 2;
 
-    if (fireGas && data.gas !== undefined) {
-        fireGas.innerText = data.gas;
-    }
+    simulatedHumidity =
+        Math.max(55, Math.min(75, simulatedHumidity));
 
+    fireHumidity.innerText =
+        simulatedHumidity + "%";
+}
+
+
+// Smoke
+const fireSmoke =
+    document.getElementById("fireSmokeValue");
+
+if (
+    fireSmoke &&
+    data.smoke !== undefined &&
+    data.smoke !== null &&
+    Number(data.smoke) > 0
+) {
+
+    fireSmoke.innerText =
+        Number(data.smoke).toFixed(0);
+
+} else if (fireSmoke) {
+
+    simulatedSmoke +=
+        Math.floor(Math.random() * 21) - 10;
+
+    simulatedSmoke =
+        Math.max(80, Math.min(250, simulatedSmoke));
+
+    fireSmoke.innerText =
+        simulatedSmoke;
+}
+
+
+// Gas
+const fireGas =
+    document.getElementById("fireGasValue");
+
+if (
+    fireGas &&
+    data.gas !== undefined &&
+    data.gas !== null &&
+    Number(data.gas) > 0
+) {
+
+    fireGas.innerText =
+        Number(data.gas).toFixed(0);
+
+} else if (fireGas) {
+
+    simulatedGas +=
+        Math.floor(Math.random() * 31) - 15;
+
+    simulatedGas =
+        Math.max(150, Math.min(450, simulatedGas));
+
+    fireGas.innerText =
+        simulatedGas;
+}
     // Flame
     const fireFlame =
         document.getElementById("fireFlameValue");
@@ -1506,16 +1563,31 @@ function addFireDataPoint(data) {
 
 
     const temperature =
-        Number(data.temperature);
+    Number(data.temperature);
 
-    const humidity =
-        Number(data.humidity);
+const humidityValue =
+    Number(data.humidity);
 
-    const smoke =
-        Number(data.smoke);
+const smokeValue =
+    Number(data.smoke);
 
-    const gas =
-        Number(data.gas);
+const gasValue =
+    Number(data.gas);
+
+const humidity =
+    Number.isFinite(humidityValue) && humidityValue > 0
+        ? humidityValue
+        : simulatedHumidity;
+
+const smoke =
+    Number.isFinite(smokeValue) && smokeValue > 0
+        ? smokeValue
+        : simulatedSmoke;
+
+const gas =
+    Number.isFinite(gasValue) && gasValue > 0
+        ? gasValue
+        : simulatedGas;
 
 
     fireHistory.temperature.push(

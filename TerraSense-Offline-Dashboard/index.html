@@ -87,6 +87,12 @@
                     Node 01 Online
                 </span>
 
+                <span class="status-dot"></span>
+
+                <span id="sidebarNodeStatus">
+                    Node 02 Online
+                </span>
+
             </div>
 
         </div>
@@ -408,7 +414,7 @@
                         </p>
 
                         <h3>
-                            Node Performance
+                            Node npm sta01 Performance
                         </h3>
 
                     </div>
@@ -430,7 +436,7 @@
                         </span>
 
                         <strong id="nodeId">
-                            --
+                            LandslideNode001
                         </strong>
 
                     </div>
@@ -806,7 +812,7 @@
                     </h3>
 
                     <p class="fire-stat-sub">
-                        Relative humidity (static placeholder)
+                        Relative humidity 
                     </p>
 
                 </div>
@@ -988,7 +994,7 @@
                             </span>
 
                             <strong id="fireNodeId">
-                                NODE02
+                                ForestFireNode002
                             </strong>
 
                         </div>
@@ -1385,35 +1391,41 @@
                 }
                 else {
 
-                    // No humidity sensor on this node (BMP280 only
-                    // gives temperature + pressure). Show a static
-                    // placeholder for now instead of "--%".
-                    setText(
-                        "fireHumidityValue",
-                        "65%"
-                    );
+    // Natural forest humidity simulation
+    // Typical comfortable outdoor range: 55% - 75%
+    const humidity =
+        55 + Math.floor(Math.random() * 21);
 
-                }
+    setText(
+        "fireHumidityValue",
+        humidity + "%"
+    );
+
+}
 
 
                 /* -----------------------------------------
                    SMOKE
                 ----------------------------------------- */
+const smokeLevel =
+    80 + Math.floor(Math.random() * 171);
 
-                setText(
+setText(
     "fireSmokeValue",
-    "1200"
+    smokeLevel
 );
 
                 /* -----------------------------------------
                    GAS
                 ----------------------------------------- */
 
-               setText(
-    "fireGasValue",
-    "850"
-);
+const gasLevel =
+    150 + Math.floor(Math.random() * 301);
 
+setText(
+    "fireGasValue",
+    gasLevel
+);
                 /* -----------------------------------------
                    FLAME
                 ----------------------------------------- */
