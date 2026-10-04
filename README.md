@@ -194,6 +194,93 @@ Filtering
 
 Machine learning will be introduced after site calibration and collection of verified field data.
 
+# TerraSense: ML Baseline (in development)
+
+This folder contains two small machine-learning baselines for TerraSense. They show the pipeline we plan to use: **data → features → model → risk/anomaly output**.
+
+> **Important:** both models are trained on **public datasets** to demonstrate the pipeline. They are **not trained on TerraSense sensor data** and are **not running on our nodes**. The working risk engine today is rule-based. For deployment, we will retrain on data collected from our own nodes (data logging is in development).
+
+## Contents
+
+| File | Purpose |
+|---|---|
+| `fire_random_forest.py` | Fire/smoke baseline (Random Forest classifier) |
+| `landslide_isolation_forest.py` | Landslide baseline (Isolation Forest anomaly detection) |
+| `check_random_split.py` | Compares a time-ordered split with a random split on the fire data |
+| `landslide_anomaly_plot.png` | Landslide anomaly scores on the held-out period |
+| `fire_prediction_plot.png` | Fire model probability on the held-out readings |
+| `screenshots/` | Terminal outputs from our runs |
+
+## 1. Fire baseline: Random Forest
+
+- **Dataset:** Smoke Detection Dataset (Blattmann), Kaggle: https://www.kaggle.com/datasets/deepcontractor/smoke-detection-dataset. Licence: **[LICENCE: copy from the dataset page]**
+- **Size:** 62,630 readings (44,757 alarm, 17,873 no alarm)
+- **Features (11):** temperature, humidity, TVOC, eCO2, raw H2, raw ethanol, PM1.0, PM2.5, NC0.5, NC1.0, NC2.5. Pressure, the row counter and time are left out because they identify the recording session, not the fire.
+- **Label:** Fire Alarm (1 = alarm, 0 = no alarm)
+- **Split:** first 70% of readings in time order for training, last 30% for testing
+
+**Result on the held-out 30% (18,789 readings):**
+
+| Class | Precision | Recall |
+|---|---|---|
+| No alarm | 0.85 | 0.98 |
+| Fire alarm | 0.99 | 0.92 |
+
+Overall accuracy is 0.94 (0.938 in `check_random_split.py`). The model missed 1,032 real alarm readings and raised 135 false alarms.
+
+**Why a time-ordered split:** a random split of the same data gives an accuracy of 1.00, because neighbouring seconds are almost identical and leak between the training and test sets. We report the time-ordered result. Run `check_random_split.py` to reproduce both numbers.
+
+**Limitations:** the sensors differ from ours, the flame sensor is not represented, and the data comes from a few recording sessions, so the score is not a TerraSense accuracy.
+
+## 2. Landslide baseline: Isolation Forest
+
+- **Dataset:** Pukrongta et al. (2025), Landslide Monitoring Dataset, Mendeley Data, DOI 10.17632/9w43sg73bt.1: https://doi.org/10.17632/9w43sg73bt.1. Licence: **[LICENCE: copy from the dataset page]**
+- **Size:** about 40,600 readings from 2 ESP32 nodes (Node1 and Node2), 13 March to 15 April 2025
+- **Features (12):** tilt (Rotation X, Rotation Y), soil moisture at 20, 40 and 60 cm, the rate of change of each soil reading, rain (raindrop), vibration, temperature, humidity
+- **Cleaning:** start-up rows where temperature, humidity or all soil sensors read 0 are removed
+- **Split:** first 70% of each node's readings for training, last 30% for testing (time order)
+- **Method:** the model learns what normal readings look like and flags unusual ones. The dataset has **no event labels**, so this is unsupervised and **we report no accuracy**.
+
+**Output on the held-out 30%:**
+
+| Node | Test readings | Flagged |
+|---|---|---|
+| Node1 | 5,216 | 373 (7.2%) |
+| Node2 | 6,965 | 8 (0.1%) |
+
+**How to read it:** the flags show a working pipeline, not landslide detection. Node1's test period differs from its training period (soil moisture shifts over the weeks), which explains most of its flags. The dataset has almost no rain or vibration events in the test period, so the flags cannot be checked against real events.
+
+## How to run
+
+1. Download the two datasets from the links above and place them in this folder (the data files are not included here, because they belong to their authors).
+   - `smoke_detection_iot.csv` (from Kaggle)
+   - `Raw_Sensor_Data_Landslide_Monitoring__1_.xlsx` (from Mendeley Data). If your file name differs, edit the `FILE = ...` line in the script.
+2. Install the packages:
+   ```
+   py -m pip install pandas scikit-learn matplotlib openpyxl
+   ```
+3. Run:
+   ```
+   py fire_random_forest.py
+   py landslide_isolation_forest.py
+   py check_random_split.py
+   ```
+
+## What comes next
+
+1. Add data logging to the dashboard so the nodes save their readings.
+2. Collect normal and abnormal-condition data from our own nodes.
+3. Retrain both models on that data and validate in time order.
+4. Run the model on the Raspberry Pi gateway, with the rule-based engine kept as the fallback.
+
+## References
+
+- Blattmann, Smoke Detection Dataset, Kaggle.
+- Pukrongta et al. (2025), Landslide Monitoring Dataset, Mendeley Data, DOI 10.17632/9w43sg73bt.1.
+
+Part of TerraSense, Team Yukti, Smart India Hackathon 2026 (Problem Statement 26178).
+
+
 ## Resilience and Fault Handling
 
 TerraSense is designed to maintain essential local operation during internet outages.
