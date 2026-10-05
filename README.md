@@ -5,16 +5,17 @@
 ### Local Edge Intelligence for Multi-Hazard Environmental Monitoring
 
 <p>
-  A modular, offline-first platform that converts field-level sensor data
-  into localized risk assessment and actionable early warnings.
+  A modular, offline-first platform for localized hazard detection,
+  edge-based risk assessment, and early warning in remote and
+  low-connectivity environments.
 </p>
 
 <p>
-  <img src="https://img.shields.io/badge/Smart%20India%20Hackathon-2026-2563eb?style=for-the-badge" alt="Smart India Hackathon 2026"/>
-  <img src="https://img.shields.io/badge/Problem%20Statement-SIH26178-f97316?style=for-the-badge" alt="SIH26178"/>
-  <img src="https://img.shields.io/badge/Domain-Disaster%20Management-dc2626?style=for-the-badge" alt="Disaster Management"/>
-  <img src="https://img.shields.io/badge/ESP32-Edge%20Nodes-16a34a?style=for-the-badge&logo=espressif" alt="ESP32"/>
-  <img src="https://img.shields.io/badge/LoRa-Field%20Communication-7c3aed?style=for-the-badge" alt="LoRa"/>
+  <img src="https://img.shields.io/badge/SIH-2026-blue?style=for-the-badge" alt="SIH 2026"/>
+  <img src="https://img.shields.io/badge/PS-SIH26178-orange?style=for-the-badge" alt="SIH26178"/>
+  <img src="https://img.shields.io/badge/Domain-Disaster%20Management-red?style=for-the-badge" alt="Disaster Management"/>
+  <img src="https://img.shields.io/badge/Platform-ESP32-green?style=for-the-badge&logo=espressif" alt="ESP32"/>
+  <img src="https://img.shields.io/badge/Communication-LoRa-blueviolet?style=for-the-badge" alt="LoRa"/>
   <img src="https://img.shields.io/badge/Operation-Offline--First-0f766e?style=for-the-badge" alt="Offline First"/>
 </p>
 
@@ -24,125 +25,125 @@
 
 ## Overview
 
-TerraSense is a distributed environmental-intelligence platform for remote and vulnerable locations.
+TerraSense is a distributed environmental-monitoring platform built around:
 
-The platform combines:
-
-- Hazard-specific ESP32 sensor nodes.
+- Hazard-specific sensor nodes.
 - Low-power LoRa communication.
 - A local edge gateway.
-- Multi-sensor risk assessment.
-- Local data storage and alerting.
+- Site-specific risk assessment.
+- Offline-first data storage and alerts.
 
-Its primary design objective is simple:
+It is designed for remote and vulnerable locations where continuous internet connectivity cannot be guaranteed.
 
-> **Convert local environmental measurements into actionable warnings, even when internet connectivity is unavailable.**
-
-## Platform Status
-
-| Capability | Status |
-|---|---|
-| Landslide monitoring node | Validated prototype |
-| Forest-fire monitoring node | Validated prototype |
-| ESP32 sensor acquisition | Implemented |
-| 433 MHz LoRa communication | Implemented in prototype |
-| Local gateway processing | Implemented in prototype |
-| SQLite data storage | Implemented in prototype |
-| Live local dashboard | Implemented in prototype |
-| Rule-based risk assessment | Current operational engine |
-| Solar-powered enclosure | Deployment configuration |
-| Flood and pollution modules | Expansion roadmap |
-| Edge-ML inference | Research and validation roadmap |
-| Self-healing LoRa mesh | Future network enhancement |
-
-## System Workflow
+### Core Flow
 
 ```text
-FIELD SENSING
-     ↓
-LoRa DATA TRANSFER
-     ↓
+SENSOR NODES
+      ↓
+LoRa COMMUNICATION
+      ↓
 LOCAL EDGE GATEWAY
-     ↓
-VALIDATION AND SENSOR FUSION
-     ↓
-SITE-SPECIFIC RISK STATE
-     ↓
-LOCAL ALERTS AND DATA LOGGING
+      ↓
+RISK ASSESSMENT
+      ↓
+LOCAL ALERTS + DATA STORAGE
 ```
 
-## System Architecture
+## Why TerraSense?
 
-```text
-┌────────────────────────────────────────────────────┐
-│                  SENSOR LAYER                      │
-│  Landslide -  Forest Fire -  Flood* -  Pollution*     │
-│  ESP32 nodes with hazard-specific sensors           │
-└───────────────────────┬────────────────────────────┘
-                        │
-                        ▼
-┌────────────────────────────────────────────────────┐
-│              COMMUNICATION LAYER                   │
-│       Low-power LoRa point-to-point / star link    │
-└───────────────────────┬────────────────────────────┘
-                        │
-                        ▼
-┌────────────────────────────────────────────────────┐
-│                 EDGE GATEWAY                       │
-│  Packet validation -  aggregation -  local storage   │
-│  Raspberry Pi 4 -  Python -  SQLite                  │
-└───────────────────────┬────────────────────────────┘
-                        │
-                        ▼
-┌────────────────────────────────────────────────────┐
-│                INTELLIGENCE LAYER                  │
-│  Filtering -  trends -  persistence -  risk rules     │
-│  Sensor health -  anomaly and event validation      │
-└───────────────────────┬────────────────────────────┘
-                        │
-                        ▼
-┌────────────────────────────────────────────────────┐
-│                RESPONSE LAYER                      │
-│  LED -  buzzer -  local dashboard -  SMS* -  voice*    │
-└────────────────────────────────────────────────────┘
-```
+Existing satellite, GIS, and centralized monitoring systems provide valuable wide-area environmental intelligence. TerraSense complements them with a low-cost, ground-level layer for continuous local sensing and faster field response.
 
-`*` Planned or deployment-dependent capabilities.
+| Existing monitoring systems | TerraSense |
+|---|---|
+| Regional or area-level observation | Site-level ground sensing |
+| Centralized processing | Local edge risk assessment |
+| Institutional warning platforms | Direct field alerts |
+| Remote access may depend on connectivity | Offline-first local operation |
+| Hazard-specific systems | One modular multi-hazard platform |
 
 ## Validated Prototypes
 
-### Landslide Monitoring Node
+### Landslide Node
 
 ```text
 Tilt -  Soil Moisture -  Rainfall -  Load
 ESP32 + LoRa + Local Risk State
 ```
 
-Supports site-level monitoring of slope-related environmental conditions.
+Site-level slope-condition monitoring.
 
-### Forest-Fire Monitoring Node
+### Forest-Fire Node
 
 ```text
 Flame -  Smoke/Gas -  Temperature
 ESP32 + LoRa + Local Monitoring
 ```
 
-Supports localized monitoring of fire-related conditions.
+Localized fire-condition monitoring.
 
 ### Prototype Foundation
 
 ```text
 ESP32 Sensor Nodes
 433 MHz LoRa
-Raspberry Pi Gateway
-Python Processing
+Local Gateway
 SQLite Storage
 Live Dashboard
 ```
 
-## Risk-State Model
+> Flood and pollution monitoring are planned expansion modules, not current validated prototypes.
 
-TerraSense represents environmental conditions using a common risk-state model:
+## System Architecture
+
+```text
+┌─────────────────────────────────────────────┐
+│           HAZARD-SPECIFIC SENSOR NODES      │
+│ Landslide -  Forest Fire -  Flood* -  Pollution*│
+└──────────────────────┬──────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────┐
+│              LoRa COMMUNICATION              │
+│        Low-power local wireless transfer     │
+└──────────────────────┬──────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────┐
+│               LOCAL EDGE GATEWAY             │
+│      Packet validation -  aggregation         │
+│             Local data storage               │
+└──────────────────────┬──────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────┐
+│                 RISK ENGINE                  │
+│     Fusion -  trends -  persistence             │
+│     validation -  risk classification          │
+└──────────────────────┬──────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────┐
+│             DASHBOARD AND ALERTS             │
+│       LED -  buzzer -  dashboard -  SMS         │
+└─────────────────────────────────────────────┘
+```
+
+`*` Planned expansion modules.
+
+## Key Capabilities
+
+- ESP32-based distributed sensing.
+- Low-power LoRa communication.
+- Packet validation and multi-node aggregation.
+- Local edge-based risk assessment.
+- SQLite-based local data storage.
+- Offline dashboard operation.
+- Local LED and buzzer alerts.
+- Optional SMS and voice notifications.
+- Replaceable hazard-specific sensor modules.
+- Common risk-state representation.
+
+### Risk States
 
 ```text
 SAFE → WATCH → WARNING → DANGER
@@ -150,24 +151,33 @@ SAFE → WATCH → WARNING → DANGER
                      FAULT
 ```
 
-| State | Meaning |
+`FAULT` indicates missing, invalid, or unreliable sensor or communication data. It must not be interpreted as a `SAFE` condition.
+
+## Technology Stack
+
+| Layer | Technology |
 |---|---|
-| `SAFE` | Valid data indicates normal conditions |
-| `WATCH` | Early deviation or developing concern |
-| `WARNING` | Persistent or multi-sensor abnormality |
-| `DANGER` | Strong evidence of hazardous conditions |
-| `FAULT` | Sensor, packet, power, or communication data is unreliable |
+| Sensor controller | ESP32 |
+| Prototype radio | SX1278 / RA-02 LoRa, 433 MHz |
+| Prototype gateway | Raspberry Pi 4 |
+| Gateway operating system | Raspberry Pi OS |
+| Gateway processing | Python |
+| Data format | JSON |
+| Local database | SQLite |
+| Dashboard | React / local web interface |
+| Current risk engine | Rule-based edge assessment |
+| Future intelligence | Anomaly detection and risk classification |
+| Power system | Solar PV + Li-ion battery |
+| Enclosure | Weather-resistant field enclosure |
 
-`FAULT` is intentionally separate from `SAFE` so that missing or unreliable data is not treated as normal operation.
+## Risk Assessment
 
-## Edge Risk Assessment
-
-The current engine uses rule-based local processing with multiple evidence checks:
+TerraSense combines multiple indicators instead of relying on a single sensor threshold.
 
 ```text
 Filtering
-+ Rate of Change
 + Trend Analysis
++ Rate of Change
 + Persistence
 + Sensor Agreement
 + Hysteresis
@@ -175,15 +185,55 @@ Filtering
 + Sensor Health
 ```
 
-This approach reduces dependence on a single threshold and supports explainable risk decisions at the gateway.
+### Planned Edge-ML Roadmap
 
-## Technology Stack
+- Isolation Forest for anomaly detection.
+- Random Forest for risk classification.
+- Time-series trend analysis.
+- Camera and thermal-sensor fusion.
 
-| Layer | Technology |
+Machine learning will be introduced after site calibration and collection of verified field data.
+
+---
+
+# TerraSense ML Baselines
+
+The `ml-baseline/` directory contains two small machine-learning baselines that demonstrate the planned pipeline:
+
+```text
+DATA → FEATURES → MODEL → RISK / ANOMALY OUTPUT
+```
+
+> **Important:** Both models are trained on public datasets to demonstrate the pipeline. They are not trained on TerraSense sensor data and are not currently running on TerraSense nodes. The operational risk engine is rule-based. For deployment, the models will be retrained using data collected from TerraSense nodes.
+
+## Contents
+
+| File | Purpose |
 |---|---|
-| Field controller | ESP32 |
-| Prototype radio | SX1278 / RA-02 LoRa, 433 MHz |
-| Prototype gateway | Raspberry Pi 4 |
-| Gateway OS | Raspberry Pi OS |
-| Gateway software | Python |
-| Data interchange |
+| `fire_random_forest.py` | Fire/smoke baseline using Random Forest classification |
+| `landslide_isolation_forest.py` | Landslide baseline using Isolation Forest anomaly detection |
+| `check_random_split.py` | Compares time-ordered and random splits for the fire dataset |
+| `landslide_anomaly_plot.png` | Landslide anomaly scores for the held-out period |
+| `fire_prediction_plot.png` | Fire-model probabilities for held-out readings |
+| `screenshots/` | Terminal outputs from model runs |
+
+## Fire Baseline: Random Forest
+
+- **Dataset:** [Smoke Detection Dataset — Kaggle](https://www.kaggle.com/datasets/deepcontractor/smoke-detection-dataset)
+- **Dataset size:** 62,630 readings
+  - 44,757 alarm readings.
+  - 17,873 non-alarm readings.
+- **Features:** Temperature, humidity, TVOC, eCO2, raw H2, raw ethanol, PM1.0, PM2.5, NC0.5, NC1.0, and NC2.5.
+- **Excluded fields:** Pressure, row counter, and time, because they identify the recording session rather than fire conditions.
+- **Label:** `Fire Alarm` — `1` for alarm and `0` for no alarm.
+- **Split:** First 70% of readings for training and final 30% for testing, preserving time order.
+
+### Held-Out Results
+
+| Class | Precision | Recall |
+|---|---:|---:|
+| No alarm | 0.85 | 0.98 |
+| Fire alarm | 0.99 | 0.92 |
+
+- **Accuracy:** 0.94 on the time-ordered split.
+- **Test readings:** 18,789.
