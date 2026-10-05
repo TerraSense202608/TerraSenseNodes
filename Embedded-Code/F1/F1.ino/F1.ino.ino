@@ -7,7 +7,7 @@
 // =====================================================
 // TERRASENSE - FOREST FIRE NODE
 // ESP32 DEVKIT V1
-// =====================================================
+// =====================================================  
 
 // -----------------------------------------------------
 // NODE ID
@@ -81,6 +81,11 @@ String riskStatus;
 // DANGER    >= 2600
 
 // =====================================================
+
+unsigned long packetCounter = 0;
+
+#define SEND_INTERVAL_MS 4000   // base interval
+#define SEND_JITTER_MS   1000   // random extra 0 to 1000 ms  
 
 #define MQ2_WARNING 1800
 #define MQ2_DANGER  2600
@@ -204,6 +209,9 @@ void setup()
   LoRa.setSpreadingFactor(7);
   LoRa.setSignalBandwidth(125E3);
   LoRa.setCodingRate4(5);
+
+  LoRa.enableCrc();
+randomSeed((uint32_t)ESP.getEfuseMac() ^ micros());
 
   Serial.println("LoRa initialized successfully.");
   Serial.println("Frequency: 433 MHz");
@@ -445,6 +453,8 @@ void sendLoRaPacket()
 
   packet += String(pressure, 2);
 
+packet += ",";
+packet += String(packetCounter++);
   // ---------------------------------------------------
   // Display packet
   // ---------------------------------------------------
@@ -488,5 +498,5 @@ void loop()
   sendLoRaPacket();
 
   // 5. Wait 3 seconds
-  delay(3000);
+  delay(SEND_INTERVAL_MS + random(0, SEND_JITTER_MS + 1));
 }

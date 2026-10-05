@@ -1,50 +1,31 @@
 // =====================================================
 // TERRASENSE GATEWAY (OFFLINE)
-// LoRa Receiver -> USB Serial -> Electron App
+// LoRa Receiver -> USB Serial -> Electron App / Logger
 // No WiFi. No Firebase. No internet required.
 // =====================================================
 //
-// This ESP32 only does two jobs:
-//   1. Receive LoRa packets from the sensor nodes
-//   2. Print them as one JSON line over USB Serial
+// Packet formats accepted over LoRa (comma separated):
 //
-// The Electron desktop app (main.js) reads this Serial
-// port and takes care of storing the data (SQLite) and
-// pushing it to the dashboard. There is no cloud step
-// in between anymore.
-//
-// -----------------------------------------------------
-// NODE 1 (Landslide) PACKET FORMAT EXPECTED OVER LoRa
-// (comma separated, 17 fields, sent by the sensor node):
-//
+// LANDSLIDE (17 fields, or 18 with a trailing packet counter)
 //   nodeID,status,tiltX,tiltY,maxTilt,soilRaw,soilWet,
 //   rainRaw,rainDetected,hx711Raw,accX,accY,accZ,
-//   gyroX,gyroY,gyroZ,temperature
+//   gyroX,gyroY,gyroZ,temperature[,counter]
 //
-// -----------------------------------------------------
-// NODE 2 / FIRE01 (Forest Fire) PACKET FORMAT
-// (confirmed from the F1_ino.ino transmitter, 6 fields):
+// FIRE (6 fields, or 7 with a trailing packet counter)
+//   nodeID,status,flame,mq2Raw,temperature,pressure[,counter]
 //
-//   nodeID,status,flame,mq2Raw,temperature,pressure
+// Packets without a counter are logged with counter = -1.
 //
-// Example: FIRE01,DANGER,1,2800,52.40,1008.20
-//
-// There is only one MQ-2 gas/smoke sensor on this node
-// (no separate smoke + gas sensors, and no humidity
-// sensor - it uses a BMP280 for temperature/pressure).
-// We forward mq2Raw as both "smoke" and "gas" so the
-// existing dashboard cards for both still populate; feel
-// free to repurpose one of those cards for "pressure"
-// instead if you'd rather show that.
+// Serial output (115200 baud):
+//   - One JSON line per good packet (parsed by Electron / logger)
+//   - One "BAD," line per packet that could not be parsed
+//   - Banner text, only if VERBOSE is 1
 // =====================================================
 
 #include <SPI.h>
 #include <LoRa.h>
 
-// =====================================================
-// LORA PINS (unchanged from the original wiring)
-// =====================================================
-
+// ---------- LoRa pins ----------
 #define LORA_SCK   18
 #define LORA_MISO  19
 #define LORA_MOSI  23
@@ -54,8 +35,17 @@
 
 #define LORA_FREQUENCY 433E6
 
-#define LANDSLIDE_FIELDS 17
-#define FIRE_FIELDS       6
+// ---------- Packet field counts ----------
+#define LANDSLIDE_FIELDS       17
+#define LANDSLIDE_FIELDS_CTR   18
+#define FIRE_FIELDS             6
+#define FIRE_FIELDS_CTR         7
+#define MAX_FIELDS             24   // safe upper limit for splitting
+
+// ---------- Logging ----------
+// 1 = print the readable banner for every packet (good for debugging)
+// 0 = print only the JSON line (cleaner and lighter for long runs)
+#define VERBOSE 0
 
 // =====================================================
 // SETUP
@@ -67,26 +57,14 @@ void setup()
   delay(1000);
 
   Serial.println();
-  Serial.println("========================================");
-  Serial.println("       TERRASENSE GATEWAY (OFFLINE)");
-  Serial.println("       LORA -> USB SERIAL");
-  Serial.println("========================================");
-
-  // ===================================================
-  // LORA
-  // ===================================================
-
-  Serial.println();
-  Serial.println("Starting LoRa...");
+  Serial.println("TERRASENSE GATEWAY (OFFLINE) - LORA -> USB SERIAL");
 
   SPI.begin(LORA_SCK, LORA_MISO, LORA_MOSI, LORA_SS);
-
   LoRa.setPins(LORA_SS, LORA_RST, LORA_DIO0);
 
   if (!LoRa.begin(LORA_FREQUENCY))
   {
     Serial.println("LoRa : FAILED");
-
     while (true)
     {
       delay(1000);
@@ -95,11 +73,10 @@ void setup()
 
   Serial.println("LoRa : CONNECTED");
   Serial.println("Frequency : 433 MHz");
-
-  Serial.println();
-  Serial.println("========================================");
+  // Record the other radio settings (SF, bandwidth, coding rate,
+  // TX power) from your node code in your test notes. They must
+  // match on the node and the gateway.
   Serial.println("Waiting for sensor nodes...");
-  Serial.println("========================================");
 }
 
 // =====================================================
@@ -118,6 +95,8 @@ void loop()
     {
       data += (char)LoRa.read();
     }
+
+    data.trim();   // remove stray \r or \n
 
     int rssi = LoRa.packetRssi();
     float snr = LoRa.packetSnr();
@@ -161,10 +140,10 @@ int splitPacket(const String &data, String values[], int maxFields)
 
 void handlePacket(const String &data, int rssi, float snr)
 {
+#if VERBOSE
   Serial.println();
   Serial.println("========================================");
   Serial.println("       PACKET RECEIVED");
-  Serial.println("========================================");
   Serial.print("RAW  : ");
   Serial.println(data);
   Serial.print("RSSI : ");
@@ -173,30 +152,49 @@ void handlePacket(const String &data, int rssi, float snr)
   Serial.print("SNR  : ");
   Serial.print(snr);
   Serial.println(" dB");
+#endif
 
-  // Try the 17-field landslide format first.
-  String values[LANDSLIDE_FIELDS];
-  int fieldCount = splitPacket(data, values, LANDSLIDE_FIELDS);
+  String values[MAX_FIELDS];
+  int fieldCount = splitPacket(data, values, MAX_FIELDS);
 
+  // ---------- Landslide ----------
   if (fieldCount == LANDSLIDE_FIELDS)
   {
-    printLandslideJson(values, rssi, snr, data);
+    printLandslideJson(values, -1, rssi, snr, data);
     return;
   }
 
-  // Otherwise try the 7-field fire format.
-  String fireValues[FIRE_FIELDS];
-  int fireFieldCount = splitPacket(data, fireValues, FIRE_FIELDS);
-
-  if (fireFieldCount == FIRE_FIELDS)
+  if (fieldCount == LANDSLIDE_FIELDS_CTR)
   {
-    printFireJson(fireValues, rssi, snr, data);
+    long counter = values[LANDSLIDE_FIELDS].toInt();
+    printLandslideJson(values, counter, rssi, snr, data);
     return;
   }
 
-  Serial.print("UNRECOGNISED PACKET - fields found: ");
-  Serial.println(fieldCount);
-  Serial.println("========================================");
+  // ---------- Fire ----------
+  if (fieldCount == FIRE_FIELDS)
+  {
+    printFireJson(values, -1, rssi, snr, data);
+    return;
+  }
+
+  if (fieldCount == FIRE_FIELDS_CTR)
+  {
+    long counter = values[FIRE_FIELDS].toInt();
+    printFireJson(values, counter, rssi, snr, data);
+    return;
+  }
+
+  // ---------- Unrecognised ----------
+  // Logged so corrupted packets are counted in the test results.
+  Serial.print("BAD,");
+  Serial.print(millis());
+  Serial.print(",");
+  Serial.print(fieldCount);
+  Serial.print(",");
+  Serial.print(rssi);
+  Serial.print(",");
+  Serial.println(snr, 2);
 }
 
 // =====================================================
@@ -226,33 +224,35 @@ String jsonEscape(const String &input)
 }
 
 // =====================================================
-// BUILD + PRINT JSON FOR A NODE 1 (LANDSLIDE) PACKET
+// BUILD + PRINT JSON FOR A LANDSLIDE PACKET
 // =====================================================
 
-void printLandslideJson(String values[], int rssi, float snr, const String &raw)
+void printLandslideJson(String values[], long counter, int rssi, float snr, const String &raw)
 {
   String nodeID        = values[0];
-  String status         = values[1];
-  float  tiltX          = values[2].toFloat();
-  float  tiltY          = values[3].toFloat();
-  float  maxTilt        = values[4].toFloat();
-  int    soilRaw        = values[5].toInt();
-  String soilWet        = values[6];
-  int    rainRaw        = values[7].toInt();
-  String rainDetected   = values[8];
-  long   hx711Raw       = values[9].toInt();
-  float  accX           = values[10].toFloat();
-  float  accY           = values[11].toFloat();
-  float  accZ           = values[12].toFloat();
-  float  gyroX          = values[13].toFloat();
-  float  gyroY          = values[14].toFloat();
-  float  gyroZ          = values[15].toFloat();
-  float  temperature    = values[16].toFloat();
+  String status        = values[1];
+  float  tiltX         = values[2].toFloat();
+  float  tiltY         = values[3].toFloat();
+  float  maxTilt       = values[4].toFloat();
+  int    soilRaw       = values[5].toInt();
+  String soilWet       = values[6];
+  int    rainRaw       = values[7].toInt();
+  String rainDetected  = values[8];
+  long   hx711Raw      = values[9].toInt();
+  float  accX          = values[10].toFloat();
+  float  accY          = values[11].toFloat();
+  float  accZ          = values[12].toFloat();
+  float  gyroX         = values[13].toFloat();
+  float  gyroY         = values[14].toFloat();
+  float  gyroZ         = values[15].toFloat();
+  float  temperature   = values[16].toFloat();
 
   String json = "{";
   json += "\"node_id\":\"" + jsonEscape(nodeID) + "\",";
   json += "\"node_type\":\"landslide\",";
   json += "\"status\":\"" + jsonEscape(status) + "\",";
+  json += "\"counter\":" + String(counter) + ",";
+  json += "\"gw_ms\":" + String(millis()) + ",";
   json += "\"tiltX\":" + String(tiltX, 2) + ",";
   json += "\"tiltY\":" + String(tiltY, 2) + ",";
   json += "\"maxTilt\":" + String(maxTilt, 2) + ",";
@@ -274,16 +274,14 @@ void printLandslideJson(String values[], int rssi, float snr, const String &raw)
   json += "\"lastPacket\":\"" + jsonEscape(raw) + "\"";
   json += "}";
 
-  // This is the line the Electron app actually parses.
   Serial.println(json);
-  Serial.println("========================================");
 }
 
 // =====================================================
-// BUILD + PRINT JSON FOR A NODE 2 (FOREST FIRE) PACKET
+// BUILD + PRINT JSON FOR A FIRE PACKET
 // =====================================================
 
-void printFireJson(String values[], int rssi, float snr, const String &raw)
+void printFireJson(String values[], long counter, int rssi, float snr, const String &raw)
 {
   String nodeID      = values[0];
   String status      = values[1];
@@ -302,11 +300,12 @@ void printFireJson(String values[], int rssi, float snr, const String &raw)
   json += "\"node_id\":\"" + jsonEscape(nodeID) + "\",";
   json += "\"node_type\":\"fire\",";
   json += "\"status\":\"" + jsonEscape(status) + "\",";
+  json += "\"counter\":" + String(counter) + ",";
+  json += "\"gw_ms\":" + String(millis()) + ",";
   json += "\"flame\":" + String(flameDetected ? "true" : "false") + ",";
   json += "\"mq2Raw\":" + String(mq2Raw) + ",";
-  // Only one physical gas sensor (MQ-2) exists on this node - the
-  // dashboard has separate "smoke" and "gas" cards, so we feed the
-  // same raw reading into both rather than leave one blank.
+  // Only one physical gas sensor (MQ-2) on this node; the same raw
+  // value feeds both the "smoke" and "gas" dashboard cards.
   json += "\"smoke\":" + String(mq2Raw) + ",";
   json += "\"gas\":" + String(mq2Raw) + ",";
   json += "\"temperature\":" + String(temperature, 2) + ",";
@@ -318,5 +317,4 @@ void printFireJson(String values[], int rssi, float snr, const String &raw)
   json += "}";
 
   Serial.println(json);
-  Serial.println("========================================");
 }

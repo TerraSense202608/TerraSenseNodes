@@ -101,6 +101,11 @@ float baseTiltY = 0.0;
 
 bool loraConnected = false;
 
+unsigned long packetCounter = 0;
+unsigned long nextSendTime = 0;
+
+#define SEND_INTERVAL_MS 6000   // base LoRa interval
+#define SEND_JITTER_MS   1500   // random extra 0 to 1500 ms
 // =====================================================
 // NORMALIZE ANGLE
 // =====================================================
@@ -275,6 +280,10 @@ void setup()
   if (LoRa.begin(LORA_FREQUENCY))
   {
     loraConnected = true;
+
+
+LoRa.enableCrc();
+randomSeed((uint32_t)ESP.getEfuseMac() ^ micros());
 
     Serial.println("LoRa : CONNECTED");
     Serial.println("LoRa Frequency : 433 MHz");
@@ -803,7 +812,7 @@ void loop()
   // LORA TRANSMISSION - ADDED ONLY
   // ===================================================
 
-  if (loraConnected)
+ if (loraConnected && millis() >= nextSendTime)
   {
     String packet = "";
 
@@ -840,9 +849,14 @@ void loop()
     packet += ",";
     packet += String(temperature, 2);
 
+    packet += ",";
+packet += String(packetCounter++);
+
     LoRa.beginPacket();
     LoRa.print(packet);
     LoRa.endPacket();
+
+    nextSendTime = millis() + SEND_INTERVAL_MS + random(0, SEND_JITTER_MS + 1);
 
     Serial.println();
     Serial.println("[ LORA ]");
