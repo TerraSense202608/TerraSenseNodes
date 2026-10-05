@@ -146,9 +146,12 @@ Live Dashboard
 
 > Flood and pollution monitoring are planned expansion modules, not current validated prototypes.
 
+## System Architecture
+
+```text
 ┌─────────────────────────────────────────────┐
 │           HAZARD-SPECIFIC SENSOR NODES      │
-│ Landslide • Forest Fire • Flood* • Pollution*│
+│  Landslide -  Forest Fire -  Flood* -  Pollution*│
 └──────────────────────┬──────────────────────┘
                        │
                        ▼
@@ -160,22 +163,25 @@ Live Dashboard
                        ▼
 ┌─────────────────────────────────────────────┐
 │               LOCAL EDGE GATEWAY             │
-│       Packet validation • aggregation        │
+│       Packet validation -  aggregation        │
 │              Local data storage              │
 └──────────────────────┬──────────────────────┘
                        │
                        ▼
 ┌─────────────────────────────────────────────┐
-│                  RISK ENGINE                 │
-│  Sensor fusion • trends • persistence        │
-│      Validation • risk classification        │
+│                 RISK ENGINE                  │
+│      Sensor fusion -  trends -  persistence    │
+│       validation -  risk classification       │
 └──────────────────────┬──────────────────────┘
                        │
                        ▼
 ┌─────────────────────────────────────────────┐
-│              DASHBOARD AND ALERTS            │
-│       LED • Buzzer • Dashboard • SMS         │
+│             DASHBOARD AND ALERTS             │
+│       LED -  buzzer -  dashboard -  SMS         │
 └─────────────────────────────────────────────┘
+```
+
+`*` Planned expansion modules.
 
 ## Key Capabilities
 
